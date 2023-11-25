@@ -22,7 +22,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   RegisterScreen.RegisterLayout()
+                    MainScreen.MainLayout()
+                    // LoginScreen.LoginLayout()
+                    // RegisterScreen.RegisterLayout()
                 }
             }
         }
