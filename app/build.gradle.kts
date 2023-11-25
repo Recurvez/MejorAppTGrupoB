@@ -51,7 +51,7 @@ android {
 
 dependencies {
 
-    implementation("com.google.accompanist:accompanist systemuicontroller:0.27.0")
+    // implementation("com.google.accompanist:accompanist systemuicontroller:0.27.0")
     implementation("androidx.compose.material3:material3:1.1.2")
 
     implementation("androidx.core:core-ktx:1.9.0")
