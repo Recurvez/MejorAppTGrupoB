@@ -10,37 +10,34 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
 import com.example.mejorapptgrupob.ui.theme.MejorAppTGrupoBTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MejorAppTGrupoBTheme {
-                // A surface container using the 'background' color from the theme
+            MaterialTheme(
+                colorScheme = MaterialTheme.colorScheme
+            ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Androiasdasdd")
+                   MainScreen.mainLayout()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+/* Os lo dejo de ejemplo por si quereís utilizar la preview en otras clases, esto va fuera
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    MejorAppTGrupoBTheme {
+    MaterialTheme {
         Greeting("Android")
     }
 }
+*/
