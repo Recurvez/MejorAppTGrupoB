@@ -50,7 +50,6 @@ import com.example.mejorapptgrupob.R
 class LoginScreen {
     companion object{
 
-        @OptIn(ExperimentalMaterial3Api::class)
         @Composable
         internal fun LoginLayout(){
 
