@@ -1,8 +1,10 @@
 package com.example.mejorapptgrupob.screens.registerScreen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -22,6 +25,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -32,20 +36,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.R
-
 class RegisterScreen {
+
     companion object{
 
         @Composable
         internal fun RegisterLayout() {
+            val context = LocalContext.current
+
             Image(
                 painter = painterResource(id = R.drawable.registerscreen_bg),
                 contentDescription = "background for login screen",
@@ -100,26 +108,36 @@ class RegisterScreen {
                     Spacer(modifier = Modifier.height(30.dp))
 
                     Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.fillMaxWidth()
+                        horizontalAlignment = Alignment.Start,
+                        modifier = Modifier.padding(start = 60.dp, end = 60.dp)
                     )
                     {
 
                         var isNameFocus by remember {
                             mutableStateOf(false)
                         }
+                        var name by remember { mutableStateOf("") }
+                        var isNameError by remember { mutableStateOf(false) }
+                        val regex = Regex("""[^!@#\$%^&*()_+\-=\[\]{};':",./<>?\\|]+""")
+                        isNameError = !name.matches(regex) && name != ""
                         Card(
                             shape = RoundedCornerShape(40.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                            border = if (isNameFocus) BorderStroke(2.dp, Color.Blue) else {
+                            border = if (isNameFocus && !isNameError){
+                                BorderStroke(2.dp, Color.Blue)
+                            } else if(isNameFocus && isNameError){
+                                BorderStroke(2.dp, Color.Red)
+                            }
+                            else {
                                 BorderStroke(0.dp, Color.Transparent)
                             }
                         ) {
                             TextField(
-                                value = "",
-                                onValueChange = { },
+                                value = name,
+                                onValueChange = { name = it },
                                 shape = RoundedCornerShape(40.dp),
                                 placeholder = { Text(text = "Nombre de usuario") },
+                                singleLine = true,
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Filled.Person,
@@ -132,14 +150,36 @@ class RegisterScreen {
                                     unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                     focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                 ),
-                                modifier = Modifier.onFocusChanged {
-                                    // Se asigna el valor de isFocused(true or false) a la variable isFocus
-                                    isNameFocus = it.isFocused
-                                }
+                                modifier = Modifier
+                                    .width(280.dp)
+                                    .onFocusChanged {
+                                        // Se asigna el valor de isFocused(true or false) a la variable isFocus
+                                        isNameFocus = it.isFocused
+                                    }
                             )
                         }
 
-                        Spacer(modifier = Modifier.padding(20.dp))
+                        if(isNameError){
+
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                text = "Caracteres prohibidos",
+                                color = Color.Red,
+                                fontSize = 12.sp,
+                                modifier = Modifier
+                                    .padding(start = 15.dp)
+                                    .clickable(enabled = true) {
+                                        generateToast(
+                                            context,
+                                            "Caracteres prohibidos\n" + """!@#\\\$%^&*()_+-=[]{};':\\\",./<>?\\\\|""",
+                                            Toast.LENGTH_SHORT
+                                        )
+                                    },
+                                )
+                            Spacer(modifier = Modifier.padding(10.dp))
+                        } else {
+                            Spacer(modifier = Modifier.padding(20.dp))
+                        }
 
                         var isAgeFocus by remember {
                             mutableStateOf(false)
@@ -152,11 +192,15 @@ class RegisterScreen {
                             }
                         )
                         {
+                            IconToggleButton(checked =, onCheckedChange =) {
+
+                            }
                             TextField(
                                 value = "",
                                 onValueChange = { },
                                 shape = RoundedCornerShape(40.dp),
                                 placeholder = { Text(text = "Edad") },
+                                readOnly = true,
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Filled.DateRange,
@@ -169,10 +213,12 @@ class RegisterScreen {
                                     unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                     focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                 ),
-                                modifier = Modifier.onFocusChanged {
-                                    // Se asigna el valor de isFocused(true or false) a la variable isFocus
-                                    isAgeFocus = it.isFocused
-                                }
+                                modifier = Modifier
+                                    .width(280.dp)
+                                    .onFocusChanged {
+                                        // Se asigna el valor de isFocused(true or false) a la variable isFocus
+                                        isAgeFocus = it.isFocused
+                                    }
                             )
                         }
 
@@ -206,10 +252,12 @@ class RegisterScreen {
                                     unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                     focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                 ),
-                                modifier = Modifier.onFocusChanged {
-                                    // Se asigna el valor de isFocused(true or false) a la variable isFocus
-                                    isPasswordFocus = it.isFocused
-                                }
+                                modifier = Modifier
+                                    .width(280.dp)
+                                    .onFocusChanged {
+                                        // Se asigna el valor de isFocused(true or false) a la variable isFocus
+                                        isPasswordFocus = it.isFocused
+                                    }
                             )
                         }
 
@@ -243,10 +291,12 @@ class RegisterScreen {
                                     unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                     focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                 ),
-                                modifier = Modifier.onFocusChanged {
-                                    // Se asigna el valor de isFocused(true or false) a la variable isFocus
-                                    isRepeatPasswordFocus = it.isFocused
-                                }
+                                modifier = Modifier
+                                    .width(280.dp)
+                                    .onFocusChanged {
+                                        // Se asigna el valor de isFocused(true or false) a la variable isFocus
+                                        isRepeatPasswordFocus = it.isFocused
+                                    }
                             )
                         }
 
@@ -269,5 +319,6 @@ class RegisterScreen {
             }
 
         }
+
     }
 }
