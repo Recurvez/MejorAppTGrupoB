@@ -27,10 +27,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     FirstScreen.FirstLayout()
                     //MainScreen.MainLayout()
-                   UserGuideScreen.UserGuideLayout()
-
-                    // MainScreen.MainLayout()
-
+                    //UserGuideScreen.UserGuideLayout()
                     // LoginScreen.LoginLayout()
                     // RegisterScreen.RegisterLayout()
 

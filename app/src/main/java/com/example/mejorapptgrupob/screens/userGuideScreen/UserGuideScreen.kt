@@ -135,7 +135,7 @@ class UserGuideScreen {
                             end = 15.dp,
                             top = 10.dp,
                             bottom = 10.dp
-                    )
+                        )
                         .animateContentSize(
                             animationSpec = spring(
                                 dampingRatio = Spring.DampingRatioMediumBouncy,
@@ -145,8 +145,8 @@ class UserGuideScreen {
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-
                     ) {
+
                         Text(
                             text = item.title,
                             style = MaterialTheme.typography.titleLarge,

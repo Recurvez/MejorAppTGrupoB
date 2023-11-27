@@ -1,36 +1,59 @@
 package com.example.mejorapptgrupob.screens.firstScreen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mejorapptgrupob.R
+import kotlin.math.exp
 
 class FirstScreen {
     companion object{
@@ -49,27 +72,70 @@ class FirstScreen {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .verticalScroll(state = rememberScrollState())
             ){
 
                 // Icono de arriba a la derecha
+                var isMenuExpanded by remember { mutableStateOf(false) }
+
                 CircularIconButton(
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(top = 16.dp),
+                        .padding(8.dp),
                     icon = painterResource(id = R.drawable.ic_launcher_foreground),
-                    onClick = {/*Por hacer*/}
+                    onClick = {
+                        isMenuExpanded = !isMenuExpanded
+                    }
                 )
-                
-                Spacer(modifier = Modifier.height(80.dp))
+
+                // Menú de usuario
+                DropdownMenu(
+                    expanded = isMenuExpanded,
+                    onDismissRequest = { isMenuExpanded = false },
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .border(1.dp, MaterialTheme.colorScheme.primary)
+                ) {
+                    Text(
+                        text = "Menú de Usuario",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(CenterHorizontally)
+                            .fillMaxSize()
+                            .background(Color(0xFF9370DB))
+                    )
+                    Divider(color = Color.Black, thickness = 1.dp)
+                    DropdownMenuItem(
+                        text = { Text("Cambiar de Usuario") },
+                        onClick = { /*TODO*/ }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Ver resultados anteriores") },
+                        onClick = { /*TODO*/ }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Cambiar Tema") },
+                        onClick = { /*TODO*/ }
+                    )
+                    DropdownMenuItem(
+                        text = { Text("Información de la app") },
+                        onClick = { /*TODO*/ }
+                    )
+                }
+
+                // Espacio entre el icono y el título
+                Spacer(modifier = Modifier.height(40.dp))
 
                 // Título
                 Text(
-                    text = "Salud Mental",
+                    text = "SALUD MENTAL",
                     style = MaterialTheme.typography.displayMedium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 32.dp),
-                    textAlign = TextAlign.Center
+                        .padding(bottom = 16.dp),
+                    textAlign = TextAlign.Center,
+                    color = Color(0xFF9370DB),
+                    fontWeight = FontWeight.Bold
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -79,22 +145,46 @@ class FirstScreen {
                     CardWithIcon(
                         icon = painterResource(id = R.drawable.userguide_icon),
                         text = "Guía de usuario",
+                        background = Brush.linearGradient(colors = listOf(
+                            Color(0xFFADD8E6),
+                            Color(0xFF9370DB),
+                            Color(0xFFBA55D3)
+                        ),
+                            start = Offset(0f, 0f),
+                            end = Offset.Infinite
+                        ),
                         onClick = {/*Por hacer*/}
                     )
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
 
                     CardWithIcon(
                         icon = painterResource(id = R.drawable.test_icon),
                         text = "Realizar Test",
+                        background = Brush.linearGradient(colors = listOf(
+                            Color(0xFF8A2BE2),
+                            Color(0xFF483D8B),
+                            Color(0xFF6A5ACD)
+                        ),
+                            start = Offset(0f, 0f),
+                            end = Offset.Infinite
+                        ),
                         onClick = {/*Por hacer*/}
                     )
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(30.dp))
 
                     CardWithIcon(
                         icon = painterResource(id = R.drawable.info_icon),
                         text = "Información de interés",
+                        background = Brush.linearGradient(colors = listOf(
+                            Color(0xFFADD8E6),
+                            Color(0xFF9370DB),
+                            Color(0xFFBA55D3)
+                        ),
+                            start = Offset(0f, 0f),
+                            end = Offset.Infinite
+                        ),
                         onClick = {/*Por hacer*/}
                     )
                 }
@@ -109,6 +199,7 @@ fun CircularIconButton(
     icon: Painter,
     onClick: () -> Unit
 ){
+
     IconButton(
         onClick = onClick,
         modifier = modifier
@@ -130,36 +221,45 @@ fun CircularIconButton(
 fun CardWithIcon(
     icon: Painter,
     text: String,
+    background: Brush,
     onClick: () -> Unit
 ){
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp)
-            .padding(10.dp, 5.dp, 10.dp, 10.dp),
-        shape = RoundedCornerShape(8.dp),
+            .height(150.dp)
+            .padding(20.dp, 5.dp, 20.dp, 10.dp),
+        shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         )
-    ){
-        Row(
+    )
+    {
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .background(background)
         ){
-            Image(painter = icon,
-                  contentDescription = null,
-                  Modifier.size(60.dp)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Image(painter = icon,
+                    contentDescription = null,
+                    Modifier.size(60.dp)
+                )
 
-            Spacer(modifier = Modifier.width(32.dp))
+                Spacer(modifier = Modifier.width(32.dp))
 
-            Text(
-                text = text,
-                style = MaterialTheme.typography.headlineSmall
-            )
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
