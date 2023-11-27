@@ -9,6 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.mejorapptgrupob.screens.firstScreen.FirstScreen
+import com.example.mejorapptgrupob.screens.infoScreen.InfoScreen
 import com.example.mejorapptgrupob.screens.loginScreen.LoginScreen
 import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterScreen
@@ -25,12 +26,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FirstScreen.FirstLayout()
+                    //FirstScreen.FirstLayout()
                     //MainScreen.MainLayout()
-                   UserGuideScreen.UserGuideLayout()
+                   //UserGuideScreen.UserGuideLayout()
 
                     // MainScreen.MainLayout()
-
+                    InfoScreen.InfoLayout()
                     // LoginScreen.LoginLayout()
                     // RegisterScreen.RegisterLayout()
 
