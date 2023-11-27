@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
@@ -11,6 +12,7 @@ import com.example.mejorapptgrupob.screens.firstScreen.FirstScreen
 import com.example.mejorapptgrupob.screens.loginScreen.LoginScreen
 import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterScreen
+import com.example.mejorapptgrupob.screens.userGuideScreen.UserGuideScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +27,13 @@ class MainActivity : ComponentActivity() {
                 ) {
                     FirstScreen.FirstLayout()
                     //MainScreen.MainLayout()
+                   UserGuideScreen.UserGuideLayout()
+
+                    // MainScreen.MainLayout()
+
                     // LoginScreen.LoginLayout()
                     // RegisterScreen.RegisterLayout()
+
                 }
             }
         }
