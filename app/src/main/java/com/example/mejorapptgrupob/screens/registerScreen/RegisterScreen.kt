@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,11 +21,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -192,34 +195,49 @@ class RegisterScreen {
                             }
                         )
                         {
-                            IconToggleButton(checked =, onCheckedChange =) {
+                            var age by remember { mutableStateOf("Introduzca la edad") }
+                            var isOpenDialog by remember { mutableStateOf(false) }
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.Start,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(55.dp)
+                                    .background(Color.White)
+                                    .clickable { isOpenDialog = true }
+                                    .padding(start = 15.dp, end = 15.dp)
+
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Filled.DateRange,
+                                    contentDescription = "Icono fecha nacimiento"
+                                )
+                                Row(
+                                    Modifier.fillMaxWidth(),
+
+                                ) {
+
+                                    Text(
+                                        text = age,
+                                        modifier = Modifier.padding(start = 15.dp)
+                                    )
+                                    if(age != "Introduzca la edad" && age != ""){
+                                        Text(
+                                            text = " años",
+                                        )
+                                    }
+                                }
 
                             }
-                            TextField(
-                                value = "",
-                                onValueChange = { },
-                                shape = RoundedCornerShape(40.dp),
-                                placeholder = { Text(text = "Edad") },
-                                readOnly = true,
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Filled.DateRange,
-                                        contentDescription = ""
-                                    )
-                                },
-                                colors = TextFieldDefaults.colors(
-                                    unfocusedIndicatorColor = Color.Transparent,
-                                    focusedIndicatorColor = Color.Transparent,
-                                    unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
-                                    focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
-                                ),
-                                modifier = Modifier
-                                    .width(280.dp)
-                                    .onFocusChanged {
-                                        // Se asigna el valor de isFocused(true or false) a la variable isFocus
-                                        isAgeFocus = it.isFocused
-                                    }
-                            )
+
+                            when{
+                                isOpenDialog -> {
+                                    val (obtainedStatusDialog, newAge) = CardAge()
+                                    isOpenDialog =  obtainedStatusDialog as Boolean
+                                    age = newAge as String
+                                }
+                            }
+
                         }
 
                         Spacer(modifier = Modifier.padding(20.dp))
@@ -302,15 +320,21 @@ class RegisterScreen {
 
                         Spacer(modifier = Modifier.height(50.dp))
 
-                        ElevatedButton(
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.White, // TODO --> CAMBIAR  COLORES
-                                contentColor = Color.Magenta // TODO --> CAMBIAR  COLORES
-                            ),
-                            onClick = { /*TODO*/ }
+                        Row(Modifier
+                            .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(text = "Registrarme")
+                            ElevatedButton(
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color.White, // TODO --> CAMBIAR  COLORES
+                                    contentColor = Color.Magenta // TODO --> CAMBIAR  COLORES
+                                ),
+                                onClick = { /*TODO*/ }
+                            ) {
+                                Text(text = "Registrarme")
+                            }
                         }
+
 
                     }
 
