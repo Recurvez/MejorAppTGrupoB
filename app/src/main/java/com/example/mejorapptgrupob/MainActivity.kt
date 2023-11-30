@@ -27,12 +27,14 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) { FirstScreen.FirstLayout()
                     //MainScreen.MainLayout()
+                   //UserGuideScreen.UserGuideLayout()
                     //UserGuideScreen.UserGuideLayout()
 
                     // MainScreen.MainLayout()
                     //InfoScreen.InfoLayout()
                     // LoginScreen.LoginLayout()
-                    //RegisterScreen.RegisterLayout()
+                    RegisterScreen.RegisterLayout()
+
 
                 }
             }
