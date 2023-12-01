@@ -1,6 +1,5 @@
 package com.example.mejorapptgrupob.screens.registerScreen
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -16,36 +15,41 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.R
@@ -122,18 +126,25 @@ class RegisterScreen {
                         var name by remember { mutableStateOf("") }
                         var isNameError by remember { mutableStateOf(false) }
                         val regex = Regex("""[^!@#\$%^&*()_+\-=\[\]{};':",./<>?\\|]+""")
-                        isNameError = !name.matches(regex) && name != ""
+                        isNameError = !name.matches(regex)
+
+                        var borderName: BorderStroke =
+
+                            if(!isNameFocus && name == "") {
+                                BorderStroke(0.dp, Color.Transparent)
+                            } else if (isNameFocus && name == ""){
+                            BorderStroke(2.dp, Color.Blue)
+                            } else if(isNameError){
+                                BorderStroke(2.dp, Color.Red)
+                            } else {
+                                BorderStroke(2.dp, Color.Green)
+                            }
+
+
                         Card(
                             shape = RoundedCornerShape(40.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                            border = if (isNameFocus && !isNameError){
-                                BorderStroke(2.dp, Color.Blue)
-                            } else if(isNameFocus && isNameError){
-                                BorderStroke(2.dp, Color.Red)
-                            }
-                            else {
-                                BorderStroke(0.dp, Color.Transparent)
-                            }
+                            border = borderName
                         ) {
                             TextField(
                                 value = name,
@@ -162,11 +173,11 @@ class RegisterScreen {
                             )
                         }
 
-                        if(isNameError){
+                        if(isNameError && name != ""){
 
                             Spacer(modifier = Modifier.height(10.dp))
                             Text(
-                                text = "Caracteres prohibidos",
+                                text = "* Caracteres prohibidos (Más información)",
                                 color = Color.Red,
                                 fontSize = 12.sp,
                                 modifier = Modifier
@@ -178,24 +189,30 @@ class RegisterScreen {
                                             Toast.LENGTH_SHORT
                                         )
                                     },
-                                )
+                            )
                             Spacer(modifier = Modifier.padding(10.dp))
                         } else {
                             Spacer(modifier = Modifier.padding(20.dp))
                         }
 
+
                         var isAgeFocus by remember {
                             mutableStateOf(false)
                         }
+                        var age by remember { mutableStateOf("Introduzca la edad") }
+                        var validAge by remember { mutableStateOf(false) }
+                        var borderAge : BorderStroke =
+                            if (isAgeFocus) BorderStroke(2.dp, Color.Blue)
+                            else if(age != "Introduzca la edad"){BorderStroke(2.dp, Color.Green)}
+                            else {
+                            BorderStroke(0.dp, Color.Transparent)
+                        }
+
                         Card(
                             shape = RoundedCornerShape(40.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                            border = if (isAgeFocus) BorderStroke(2.dp, Color.Blue) else {
-                                BorderStroke(0.dp, Color.Transparent)
-                            }
-                        )
-                        {
-                            var age by remember { mutableStateOf("Introduzca la edad") }
+                            border = borderAge
+                        ) {
                             var isOpenDialog by remember { mutableStateOf(false) }
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
@@ -215,7 +232,7 @@ class RegisterScreen {
                                 Row(
                                     Modifier.fillMaxWidth(),
 
-                                ) {
+                                    ) {
 
                                     Text(
                                         text = age,
@@ -227,7 +244,6 @@ class RegisterScreen {
                                         )
                                     }
                                 }
-
                             }
 
                             when{
@@ -245,24 +261,66 @@ class RegisterScreen {
                         var isPasswordFocus by remember {
                             mutableStateOf(false)
                         }
+
+                        var password by remember { mutableStateOf("") }
+
+                        // -1 bad format, 0 ok, 1 vacía, 2 sin seleccionar
+                        var passwordState by remember { mutableIntStateOf(-2) }
+
+                        if(isPasswordFocus){
+                            passwordState = 1
+
+                            // una minúscula, una mayúscula y un número, 6 veces, esto como mínimo
+                            // https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+                            if(password.matches(Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}\$")))
+                            {passwordState = 0}
+                            else {
+                                if(password == ""){
+                                    passwordState = 1
+                                } else {
+                                    passwordState = -1
+                                }
+                            }
+                        }
+
+                        var borderColor: BorderStroke =
+                            if (passwordState == 0) BorderStroke(2.dp, Color.Green)
+                            else if(passwordState == -1) BorderStroke(2.dp, Color.Red)
+                            else if(passwordState == 1) BorderStroke(2.dp, Color.Blue)
+                            else BorderStroke(0.dp, Color.Transparent)
+
                         Card(
                             shape = RoundedCornerShape(40.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                            border = if (isPasswordFocus) BorderStroke(2.dp, Color.Blue) else {
-                                BorderStroke(0.dp, Color.Transparent)
-                            }
+                            border = borderColor
                         )
                         {
+                            var isPasswordVisible by remember { mutableStateOf(false) }
                             TextField(
-                                value = "",
-                                onValueChange = { },
+                                value = password,
+                                onValueChange = { password = it },
                                 shape = RoundedCornerShape(40.dp),
-                                placeholder = { Text(text = "Introduzca una contraseña") },
+                                placeholder = { Text(text = "Contraseña") },
+                                singleLine = true,
+                                visualTransformation = if(isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Filled.Lock,
                                         contentDescription = ""
                                     )
+                                },
+                                trailingIcon = {
+                                    val image = if (isPasswordVisible){
+                                        Icons.Filled.Visibility
+                                    } else {
+                                        Icons.Filled.VisibilityOff
+                                    }
+                                    val description = if (isPasswordVisible) "Hide password" else "Show password"
+
+                                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                                        Icon(imageVector = image, contentDescription = description)
+                                    }
                                 },
                                 colors = TextFieldDefaults.colors(
                                     unfocusedIndicatorColor = Color.Transparent,
@@ -278,30 +336,76 @@ class RegisterScreen {
                                     }
                             )
                         }
+                        if(passwordState == -1){
+                            Spacer(modifier = Modifier.height(10.dp))
+                            Text(
+                                text = "* Formato inválido (Más información)",
+                                color = Color.Red,
+                                fontSize = 12.sp,
+                                modifier = Modifier
+                                    .padding(start = 15.dp)
+                                    .clickable(enabled = true) {
+                                        generateToast(
+                                            context,
+                                            """Seis carácteres, uno en mayúscula, uno en minúscula y un número""",
+                                            Toast.LENGTH_LONG
+                                        )
+                                    },
+                            )
+                        }
+
 
                         Spacer(modifier = Modifier.padding(20.dp))
 
                         var isRepeatPasswordFocus by remember {
                             mutableStateOf(false)
                         }
+                        var repeatPassword: String by remember { mutableStateOf("") }
+                        var repeatPasswordState by remember { mutableIntStateOf(-2) }
+                        var borderRepeatPassword: BorderStroke =
+                            if (isRepeatPasswordFocus && repeatPassword == "") BorderStroke(2.dp, Color.Blue)
+                            else if(repeatPassword != "" && (password != repeatPassword) ){
+                                BorderStroke(2.dp, MaterialTheme.colorScheme.error)
+                            } else if((repeatPassword != "" && (password == repeatPassword))){
+                                BorderStroke(2.dp, Color.Green)
+                            }
+
+                        else {
+                            BorderStroke(0.dp, Color.Transparent)
+                        }
+
                         Card(
                             shape = RoundedCornerShape(40.dp),
                             elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                            border = if (isRepeatPasswordFocus) BorderStroke(2.dp, Color.Blue) else {
-                                BorderStroke(0.dp, Color.Transparent)
-                            }
+                            border = borderRepeatPassword
                         )
                         {
+                            var isPasswordVisible by remember { mutableStateOf(false) }
                             TextField(
-                                value = "",
-                                onValueChange = { },
+                                value = repeatPassword,
+                                onValueChange = { repeatPassword = it },
                                 shape = RoundedCornerShape(40.dp),
                                 placeholder = { Text(text = "Repita la contraseña") },
+                                singleLine = true,
+                                visualTransformation = if(isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Filled.Lock,
                                         contentDescription = ""
                                     )
+                                },
+                                trailingIcon = {
+                                    val image = if (isPasswordVisible){
+                                        Icons.Filled.Visibility
+                                    } else {
+                                        Icons.Filled.VisibilityOff
+                                    }
+                                    val description = if (isPasswordVisible) "Hide password" else "Show password"
+
+                                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                                        Icon(imageVector = image, contentDescription = description)
+                                    }
                                 },
                                 colors = TextFieldDefaults.colors(
                                     unfocusedIndicatorColor = Color.Transparent,
@@ -329,13 +433,18 @@ class RegisterScreen {
                                     containerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                     contentColor = Color.Magenta // TODO --> CAMBIAR  COLORES
                                 ),
-                                onClick = { /*TODO*/ }
+                                onClick = {
+                                    if(!isNameError && age.matches(regex = Regex("\\d+")) && passwordState == 0 && repeatPassword == password){
+                                        generateToast(context, "Se puede crear un usuario", Toast.LENGTH_SHORT)
+                                    } else {
+                                        // Checkear todos los campos que faltan y ponerlos en rojo
+                                        generateToast(context, "Por favor rellene todos los campos", Toast.LENGTH_SHORT)
+                                    }
+                                }
                             ) {
                                 Text(text = "Registrarme")
                             }
                         }
-
-
                     }
 
                 }
