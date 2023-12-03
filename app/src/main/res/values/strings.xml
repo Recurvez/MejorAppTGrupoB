@@ -2,12 +2,12 @@
     <string name="app_name">MejorAppTGrupoB</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
-<<<<<<< HEAD
+
     <string name="title_activity_test1">TestActivity1</string>
-=======
+
     <string name="title_activity_info">InfoActivity</string>
     <string name="title_activity_first">FirstActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_user_guide">UserGuideActivity</string>
->>>>>>> 332944668a43d455dcb579800561f59c9d9e00c5
+
 </resources>
