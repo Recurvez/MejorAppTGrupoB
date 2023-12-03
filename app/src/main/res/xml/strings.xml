@@ -1,35 +1,25 @@
 <resources>
     <string name="Q1">En los exámenes me sudan las manos</string>
-    <string name="Q2">Cuando llevo rato haciendo el examen, siento molestias en el estómago y
-        necesidad de defecar.</string>
+    <string name="Q2">Cuando llevo rato haciendo el examen, siento molestias en el estómago y necesidad de defecar.</string>
     <string name="Q3">Al comenzar a leer el examen se me nubla la vista y no entiendo lo que leo</string>
-    <string name="Q4">Si llego 5 minutos tarde a un examen ya no entro, me escondo por el instituto o
-        intento marcharme.</string>
-    <string name="Q5">Las condiciones donde se realiza un examen (mucho ruido, calor, frío, sol…) me
-        influyen aumentando mi nerviosismo.</string>
+    <string name="Q4">Si llego 5 minutos tarde a un examen ya no entro, me escondo por el instituto o intento marcharme.</string>
+    <string name="Q5">Las condiciones donde se realiza un examen (mucho ruido, calor, frío, sol…) me influyen aumentando mi nerviosismo.</string>
     <string name="Q6">Cuando termino un examen me duele la cabeza</string>
-    <string name="Q7">Cuando llevo un rato haciendo el examen, yo siento que me falta el aire, mucho
-        calor y sensación de que me voy a desmayar</string>
-    <string name="Q8">Me siento nervioso/a si el profesor/a se para junto a mí y ya no puedo seguir
-        contestando</string>
+    <string name="Q7">Cuando llevo un rato haciendo el examen, yo siento que me falta el aire, mucho calor y sensación de que me voy a desmayar</string>
+    <string name="Q8">Me siento nervioso/a si el profesor/a se para junto a mí y ya no puedo seguir contestando</string>
     <string name="Q9">Me pongo nervioso/a al ver al profesor/a con los exámenes antes de entrar al aula</string>
     <string name="Q10">En el examen siento rígidas las manos y/o los brazos</string>
-    <string name="Q11">Antes de entrar al examen siento un nudo en el estómago, que desaparece al
-        comenzar a escribir</string>
-    <string name="Q12">Al comenzar el examen, nada más leer las preguntas lo entrego al profesor/a en
-        blanco y vuelvo a mi sitio.</string>
-    <string name="Q13">Después del examen lloro con facilidad, al pensar lo mal que lo he hecho aunque no
-        sepa el resultado</string>
+    <string name="Q11">Antes de entrar al examen siento un nudo en el estómago, que desaparece al comenzar a escribir</string>
+    <string name="Q12">Al comenzar el examen, nada más leer las preguntas lo entrego al profesor/a en blanco y vuelvo a mi sitio.</string>
+    <string name="Q13">Después del examen lloro con facilidad, al pensar lo mal que lo he hecho aunque no sepa el resultado</string>
     <string name="Q14">Mientras que estoy realizando el examen, pienso que lo estoy haciendo muy mal</string>
     <string name="Q15">Me siento nervioso/a si los demás comienzan a entregar el examen antes que yo</string>
     <string name="Q16">Pienso que el profesor/a me está observando constantemente</string>
     <string name="Q17">Suelo morderme las uñas o el bolígrafo durante los exámenes</string>
     <string name="Q18">Tengo muchas ganas de ir al cuarto de baño durante el examen</string>
-    <string name="Q19">No puedo quedarme quieto/a mientras hago el examen (muevo los pies, el bolígrafo,
-        miro alrededor, miro la hora…)</string>
+    <string name="Q19">No puedo quedarme quieto/a mientras hago el examen (muevo los pies, el bolígrafo,miro alrededor, miro la hora…)</string>
     <string name="Q20">Me pongo malo/a y doy excusas para no hacer un examen</string>
-    <string name="Q21">Para mí supone una tranquilidad o alivio cuando por cualquier razón, se aplaza un
-        examen</string>
+    <string name="Q21">Para mí supone una tranquilidad o alivio cuando por cualquier razón, se aplaza un examen</string>
     <string name="Q22">Pienso que no voy a poder aprobar el examen, aunque haya estudiado</string>
     <string name="Q23">Antes de hacer el examen pienso que no me acuerdo de nada y voy a suspenderlo</string>
     <string name="Q24">No consigo dormir la noche anterior a un examen</string>
@@ -37,27 +27,22 @@
     <string name="Q26">He sentido mareos y ganas de vomitar en un examen</string>
     <string name="Q27">Momentos antes de hacer el examen tengo la boca seca y me cuesta trargar</string>
     <string name="Q28">Si me siento en las primeras filas para hacer un examen, aumenta mi nerviosismo</string>
-    <string name="Q29">Si el exaen tiene un tiempo fijo para realizarse, aumenta mi nerviosismo y lo hago peor</string>
+    <string name="Q29">Si el examen tiene un tiempo fijo para realizarse, aumenta mi nerviosismo y lo hago peor</string>
     <string name="Q30">Me siento nervioso/a en aulas muy grandes </string>
     <string name="Q31">Cuando estoy haciendo un examen el corazón me late muy deprisa</string>
     <string name="Q32">Al entrar en el aula donde se hace el examen me tiemblan las piernas</string>
     <string name="Q33">Me siento nervioso/a en clases demasiado pequeñas</string>
-    <string name="Q34">Cuando un grupo de compañeros habla del examen antes de que venga el profesor
-        me pongo más nervioso/a</string>
+    <string name="Q34">Cuando un grupo de compañeros habla del examen antes de que venga el profesor me pongo más nervioso/a</string>
     <string name="Q35">Al salir del examen, tengo la sensación de haberlo hecho muy mal</string>
     <string name="Q36">Pienso que me voy a poner nervioso/a y se me va a olvidar todo</string>
+    <string name="Q37">Tardo mucho tiempo en decidirme por contestar la mayoría de las preguntas o por entregar el examen</string>
     <string name="Q38">Me resulta difícil o imposible ingerir alimentos antes de realizar un examen</string>
-    <string name="Q39">En las horas/momentos previos al examen siento molestias en el estómago o se
-        me descompone y tengo que ir al baño</string>
-    <string name="Q40">Desarrollo un ritual de comportamiento que me da seguridad y cuando algo me falla
-        pienso que el examen se me va a dar mal</string>
+    <string name="Q39">En las horas/momentos previos al examen siento molestias en el estómago o se me descompone y tengo que ir al baño</string>
+    <string name="Q40">Desarrollo un ritual de comportamiento que me da seguridad y cuando algo me falla pienso que el examen se me va a dar mal</string>
     <string name="Q41">Antes de entrar al examen hablo con mucha rapidez y me muevo más de lo habitual</string>
-    <string name="Q42">La noche anterior al examen o la misma mañana me asaltan pensamientos de
-        inseguridad aunque lo haya trabajado e incluso lloro con facilidad</string>
-    <string name="Q43">Establezco un ritual previo al examen y si no puedo cumplirlo, busco alguna excusa
-        y no entro al examen</string>
-    <string name="Q44">Tras haber realizado un examen siento que lo he hecho fatal y pienso en
-        desaparecer o hacerme daño.</string>
+    <string name="Q42">La noche anterior al examen o la misma mañana me asaltan pensamientos de inseguridad aunque lo haya trabajado e incluso lloro con facilidad</string>
+    <string name="Q43">Establezco un ritual previo al examen y si no puedo cumplirlo, busco alguna excusa y no entro al examen</string>
+    <string name="Q44">Tras haber realizado un examen siento que lo he hecho fatal y pienso en desaparecer o hacerme daño.</string>
     <string name="Q45">Un examen de entrevista personal</string>
     <string name="Q46">Un examen oral en público</string>
     <string name="Q47">Una exposición de un trabajo en clase</string>
