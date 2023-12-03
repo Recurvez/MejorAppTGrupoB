@@ -49,7 +49,6 @@ import com.example.mejorapptgrupob.R
 
 class LoginScreen {
     companion object{
-
         @Composable
         internal fun LoginLayout(){
 
