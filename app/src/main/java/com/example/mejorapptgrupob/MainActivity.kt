@@ -22,6 +22,8 @@ import com.example.mejorapptgrupob.screens.testScreen.TestScreen6
 import com.example.mejorapptgrupob.screens.testScreen.TestScreen7
 import com.example.mejorapptgrupob.screens.testScreen.TestScreen8
 import com.example.mejorapptgrupob.screens.testScreen.TestScreen9
+import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,15 +37,19 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     //FirstScreen.FirstLayout()
+
                     //MainScreen.MainLayout()
                     //UserGuideScreen.UserGuideLayout()
                     TestScreen.Screen()
 
+
+                    MainScreen.MainLayout()
+                    //UserGuideScreen.UserGuideLayout()
+
                     // MainScreen.MainLayout()
-
+                    // InfoScreen.InfoLayout()
                     // LoginScreen.LoginLayout()
-                    // RegisterScreen.RegisterLayout()
-
+                    //RegisterScreen.RegisterLayout()
                 }
             }
         }
