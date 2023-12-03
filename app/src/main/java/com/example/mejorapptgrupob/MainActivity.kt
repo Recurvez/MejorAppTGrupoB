@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
 
                     //MainScreen.MainLayout()
                     //UserGuideScreen.UserGuideLayout()
-                    TestScreen.Screen()
+                    //TestScreen.Screen()
 
 
                     MainScreen.MainLayout()
