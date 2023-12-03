@@ -2,4 +2,5 @@
     <string name="app_name">MejorAppTGrupoB</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_test1">TestActivity1</string>
 </resources>
