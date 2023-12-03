@@ -4,15 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.mejorapptgrupob.screens.firstScreen.FirstScreen
-import com.example.mejorapptgrupob.screens.loginScreen.LoginScreen
-import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
-import com.example.mejorapptgrupob.screens.registerScreen.RegisterScreen
-import com.example.mejorapptgrupob.screens.userGuideScreen.UserGuideScreen
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen10
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen11
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen12
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen13
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen14
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen15
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen2
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen3
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen4
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen5
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen6
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen7
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen8
+import com.example.mejorapptgrupob.screens.testScreen.TestScreen9
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,9 +34,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FirstScreen.FirstLayout()
+                    //FirstScreen.FirstLayout()
                     //MainScreen.MainLayout()
-                   UserGuideScreen.UserGuideLayout()
+                    //UserGuideScreen.UserGuideLayout()
+                    TestScreen.Screen()
 
                     // MainScreen.MainLayout()
 
