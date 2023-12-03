@@ -54,6 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.mejorapptgrupob.R
+import com.example.mejorapptgrupob.screens.registerScreen.RegisterLayout
 import kotlin.math.exp
 
 class FirstScreen {
@@ -224,7 +225,7 @@ fun CardWithIcon(
     text: String,
     background: Brush,
     onClick: () -> Unit
-){
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -239,15 +240,16 @@ fun CardWithIcon(
         Box(
             modifier = Modifier
                 .background(background)
-        ){
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
-            ){
-                Image(painter = icon,
+            ) {
+                Image(
+                    painter = icon,
                     contentDescription = null,
                     Modifier.size(60.dp)
                 )
@@ -264,4 +266,3 @@ fun CardWithIcon(
         }
     }
 }
-

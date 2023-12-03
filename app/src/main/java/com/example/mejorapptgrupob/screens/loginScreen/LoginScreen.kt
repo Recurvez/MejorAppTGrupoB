@@ -1,7 +1,5 @@
 package com.example.mejorapptgrupob.screens.loginScreen
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -189,8 +187,6 @@ class LoginScreen {
                     }
 
                 }
-
-
 
             }
 
