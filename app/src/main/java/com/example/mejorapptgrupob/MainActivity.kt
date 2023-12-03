@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
+
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -32,28 +33,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.mejorapptgrupob.screens.loginScreen.LoginScreen
+import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
+import com.example.mejorapptgrupob.screens.loginScreen.LoginActivity
 
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
-
-
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen10
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen11
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen12
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen13
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen14
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen15
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen2
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen3
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen4
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen5
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen6
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen7
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen8
-import com.example.mejorapptgrupob.screens.testScreen.TestScreen9
-
-
 
 
 class MainActivity : ComponentActivity() {
@@ -67,9 +50,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     MainLayout()
-
                 }
             }
         }
@@ -136,7 +117,7 @@ internal fun MainLayout(){
         ) {
             Button(
                 onClick = {
-                    mContext.startActivity(Intent(mContext, LoginScreen::class.java))
+                    mContext.startActivity(Intent(mContext, LoginActivity::class.java))
                 },
                 modifier = Modifier.width(140.dp)
             ) {
@@ -148,7 +129,7 @@ internal fun MainLayout(){
             OutlinedButton(
                 onClick = {
                     mContext.startActivity(Intent(mContext, RegisterActivity::class.java))
-                          },
+                },
                 modifier = Modifier.width(140.dp)
             ) {
                 Text(text = "Registrarse")

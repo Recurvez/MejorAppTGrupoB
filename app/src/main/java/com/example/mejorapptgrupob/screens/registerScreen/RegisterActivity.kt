@@ -1,5 +1,6 @@
 package com.example.mejorapptgrupob.screens.registerScreen
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -64,7 +65,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.mejorapptgrupob.MainActivity
 import com.example.mejorapptgrupob.R
+import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
 import com.example.mejorapptgrupob.screens.registerScreen.ui.theme.MejorAppTGrupoBTheme
 
 class RegisterActivity : ComponentActivity() {
@@ -123,7 +126,7 @@ internal fun RegisterLayout() {
         ) {
             Row(
                 Modifier.clickable {
-
+                    context.startActivity(Intent(context, MainActivity::class.java))
                 }
             ) {
                 Image(
@@ -563,6 +566,7 @@ internal fun RegisterLayout() {
                             onClick = {
                                 if( !isEmailError && !isNameError && age.matches(regex = Regex("\\d+")) && passwordState == 0 && repeatPassword == password){
                                     generateToast(context, "Se puede crear un usuario", Toast.LENGTH_SHORT)
+                                    context.startActivity(Intent(context, FirstActivity::class.java))
 
                                 } else {
                                     // Checkear todos los campos que faltan y ponerlos en rojo
