@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+<<<<<<< HEAD
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterScreen
+=======
+import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
+>>>>>>> 4ba810d060fdfeffb8e689b66b6861192b4181cd
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,11 +24,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // FirstScreen.FirstLayout()
-                    // MainScreen.MainLayout()
-                    // UserGuideScreen.UserGuideLayout()
+                    //FirstScreen.FirstLayout()
+                    MainScreen.MainLayout()
                     //UserGuideScreen.UserGuideLayout()
-
                     // MainScreen.MainLayout()
                     // InfoScreen.InfoLayout()
                     // LoginScreen.LoginLayout()
