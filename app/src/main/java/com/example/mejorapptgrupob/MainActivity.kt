@@ -20,14 +20,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    
                     //FirstScreen.FirstLayout()
                     MainScreen.MainLayout()
-                   //UserGuideScreen.UserGuideLayout()
                     //UserGuideScreen.UserGuideLayout()
-
                     // MainScreen.MainLayout()
-                    //InfoScreen.InfoLayout()
+                    // InfoScreen.InfoLayout()
                     // LoginScreen.LoginLayout()
                     //RegisterScreen.RegisterLayout()
                 }
