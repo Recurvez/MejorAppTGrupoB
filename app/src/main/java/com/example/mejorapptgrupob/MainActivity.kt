@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.mejorapptgrupob.screens.firstScreen.FirstScreen
 import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
 
 class MainActivity : ComponentActivity() {
@@ -20,8 +21,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    //FirstScreen.FirstLayout()
-                    MainScreen.MainLayout()
+                    FirstScreen.FirstLayout()
+                    //MainScreen.MainLayout()
                     //UserGuideScreen.UserGuideLayout()
                     // MainScreen.MainLayout()
                     // InfoScreen.InfoLayout()
