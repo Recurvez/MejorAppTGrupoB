@@ -12,7 +12,7 @@ private const val SQL_DELETE_ENTRIES1 = "DROP TABLE IF EXISTS preguntas"
 private const val SQL_DELETE_ENTRIES2 = "DROP TABLE IF EXISTS respuestas"
 
 
-    class DBHelper(context: DBUtilities.Companion) :
+    class DBHelper(context: DBUtilities) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
         override fun onCreate(db: SQLiteDatabase) {
             db.execSQL(SQL_CREATE_ENTRIES1)
