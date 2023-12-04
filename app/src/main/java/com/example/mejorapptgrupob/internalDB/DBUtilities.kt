@@ -1,19 +1,23 @@
 package com.example.mejorapptgrupob.internalDB
 
 import android.content.ContentValues
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import androidx.compose.runtime.Composable
+import android.database.sqlite.SQLiteOpenHelper
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 
-var context = this
 
-class DBUtilities (private val inputStream: InputStream)  {
+
+class DBUtilities (private val inputStream: InputStream, context: Context)  {
+
+
+    private val context: Context = context
 
     fun inicializar(inputStream: InputStream) {
         val texto = leerArchivo(inputStream)
-        val bh = DBHelper(this)
+        val bh = DBHelper(context)
         val db = bh.writableDatabase
         db.beginTransaction()
         for (i in texto.indices) {
@@ -46,7 +50,6 @@ class DBUtilities (private val inputStream: InputStream)  {
         return byteArrayOutputStream.toString().split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
     }
 
-
     private fun obtenerPregunta(i: Int) {
         val bh = DBHelper(context)
         val dbR: SQLiteDatabase = bh.readableDatabase
@@ -60,4 +63,5 @@ class DBUtilities (private val inputStream: InputStream)  {
         c.close()
         dbR.close()
     }
+
 }

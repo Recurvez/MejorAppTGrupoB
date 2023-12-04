@@ -47,7 +47,11 @@ import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+<<<<<<< HEAD
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas))
+=======
+        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
+>>>>>>> 309f011d998f905bba20b218a1c694b454fbd0dd
 
 
 
