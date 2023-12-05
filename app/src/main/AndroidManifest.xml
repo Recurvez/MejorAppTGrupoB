@@ -24,6 +24,10 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".screens.loginScreen.LoginScreen" />
+        <activity android:name=".screens.registerScreen.RegisterScreen" />
+
+
     </application>
 
 </manifest>

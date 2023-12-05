@@ -32,6 +32,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,19 +46,59 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
+import androidx.datastore.dataStore
+import androidx.datastore.preferences.core.MutablePreferences
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.mejorapptgrupob.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.flow.first
 
 class LoginScreen {
-    companion object{
+
+
+    companion object {
+
+        val USER_KEY = stringPreferencesKey("user_key")
+        val PASSWORD_KEY = stringPreferencesKey("password_key")
+
+        private suspend fun guardarPreferencias(dataStore: DataStore<Preferences>, username: String, password: String) {
+            dataStore.edit { preferences ->
+                preferences[USER_KEY] = username
+                preferences[PASSWORD_KEY] = password
+            }
+        }
+
+        suspend fun mostrarPreferencias(dataStore: DataStore<Preferences>) {
+            val preferences = dataStore.data.first()
+
+            val username = preferences[USER_KEY]
+            val password = preferences[PASSWORD_KEY]
+
+            println("Nombre de usuario: $username")
+            println("Contraseña: $password")
+        }
 
         @Composable
-        internal fun LoginLayout(){
+        internal fun LoginLayout(dataStore: DataStore<Preferences>) {
+            var username by remember { mutableStateOf("") }
+            var password by remember { mutableStateOf("") }
+
+            LaunchedEffect(Unit) {
+                val preferences = dataStore.data.first()
+                username = preferences[USER_KEY] ?: ""
+                password = preferences[PASSWORD_KEY] ?: ""
+            }
+
 
             Image(
-                painter = painterResource(id = R.drawable.loginscreen_bg) ,
+                painter = painterResource(id = R.drawable.loginscreen_bg),
                 contentDescription = "background for login screen",
                 alignment = Alignment.BottomCenter,
-                // El fondo no se llegaba a ajustar bien a la anchura del dispositivo
                 contentScale = ContentScale.FillBounds
             )
 
@@ -67,8 +108,9 @@ class LoginScreen {
             // a la contraseña
 
             Column {
-                Column(Modifier
-                    .padding(start = 10.dp, top = 5.dp)
+                Column(
+                    Modifier
+                        .padding(start = 10.dp, top = 5.dp)
                 ) {
                     Row {
                         Image(
@@ -100,14 +142,16 @@ class LoginScreen {
                     horizontalArrangement = Arrangement.Center
                 )
                 {
-                    Image(painter = painterResource(
-                        id = R.drawable.logo),
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.logo
+                        ),
                         contentDescription = "Logo en la pantalla de inicio de sesión",
                         modifier = Modifier.size(180.dp)
                     )
                 }
 
-                Spacer(modifier = Modifier.height(250.dp))
+                Spacer(modifier = Modifier.height(120.dp))
 
                 Column(
                     Modifier
@@ -125,14 +169,21 @@ class LoginScreen {
                     Card(
                         shape = RoundedCornerShape(40.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                        border = if (isUserFocus) BorderStroke(2.dp, Color.Blue) else { BorderStroke(0.dp, Color.Transparent) }
+                        border = if (isUserFocus) BorderStroke(2.dp, Color.Blue) else {
+                            BorderStroke(0.dp, Color.Transparent)
+                        }
                     ) {
                         TextField(
-                            value = "",
-                            onValueChange = {  },
+                            value = username,
+                            onValueChange = { username = it },
                             shape = RoundedCornerShape(40.dp),
-                            placeholder = {Text(text ="Usuario")},
-                            leadingIcon = {Icon(imageVector = Icons.Filled.Person, contentDescription = "")},
+                            placeholder = { Text(text = "Usuario") },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Filled.Person,
+                                    contentDescription = ""
+                                )
+                            },
                             colors = TextFieldDefaults.colors(
                                 unfocusedIndicatorColor = Color.Transparent,
                                 focusedIndicatorColor = Color.Transparent,
@@ -146,7 +197,7 @@ class LoginScreen {
                         )
                     }
 
-                    Spacer(modifier =Modifier.padding(20.dp))
+                    Spacer(modifier = Modifier.padding(20.dp))
 
                     var isPasswordFocus by remember {
                         mutableStateOf(false)
@@ -154,14 +205,21 @@ class LoginScreen {
                     Card(
                         shape = RoundedCornerShape(40.dp),
                         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                        border = if (isPasswordFocus) BorderStroke(2.dp, Color.Blue) else { BorderStroke(0.dp, Color.Transparent) }
+                        border = if (isPasswordFocus) BorderStroke(2.dp, Color.Blue) else {
+                            BorderStroke(0.dp, Color.Transparent)
+                        }
                     ) {
                         TextField(
-                            value = "",
-                            onValueChange = {  },
+                            value = password,
+                            onValueChange = { password = it },
                             shape = RoundedCornerShape(40.dp),
-                            placeholder = {Text(text ="Contraseña")},
-                            leadingIcon = {Icon(imageVector = Icons.Filled.Lock, contentDescription = "")},
+                            placeholder = { Text(text = "Contraseña") },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Filled.Lock,
+                                    contentDescription = ""
+                                )
+                            },
                             colors = TextFieldDefaults.colors(
                                 unfocusedIndicatorColor = Color.Transparent,
                                 focusedIndicatorColor = Color.Transparent,
@@ -177,12 +235,16 @@ class LoginScreen {
 
                     Spacer(modifier = Modifier.height(50.dp))
 
+                    val coroutineScope = rememberCoroutineScope()
+
                     ElevatedButton(
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White, // TODO --> CAMBIAR  COLORES
-                            contentColor = Color.Magenta // TODO --> CAMBIAR  COLORES
-                        ),
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                            coroutineScope.launch {
+                                guardarPreferencias(dataStore, username, password)
+                                mostrarPreferencias(dataStore)
+                            }
+                        },
+
                     ) {
                         Text(text = "Iniciar sesión")
                     }
@@ -190,10 +252,11 @@ class LoginScreen {
                 }
 
 
-
             }
 
         }
+
+
 
     }
 }

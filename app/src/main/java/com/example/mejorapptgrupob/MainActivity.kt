@@ -1,48 +1,35 @@
 package com.example.mejorapptgrupob
-
+import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.mejorapptgrupob.screens.loginScreen.LoginScreen
-import com.example.mejorapptgrupob.screens.mainScreen.MainScreen
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterScreen
-import com.example.mejorapptgrupob.screens.userGuideScreen.UserGuideScreen
 
 class MainActivity : ComponentActivity() {
+
+    private val dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme(
-                colorScheme = MaterialTheme.colorScheme
-            ) {
+            MaterialTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                   UserGuideScreen.UserGuideLayout()
-
-                    // MainScreen.MainLayout()
-                    // LoginScreen.LoginLayout()
-                    // RegisterScreen.RegisterLayout()
-
+                    LoginScreen.LoginLayout(dataStore = dataStore)
+                
                 }
             }
         }
     }
 }
-
-/* Os lo dejo de ejemplo por si quereís utilizar la preview en otras clases, esto va fuera
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MaterialTheme {
-        Greeting("Android")
-    }
-}
-*/
