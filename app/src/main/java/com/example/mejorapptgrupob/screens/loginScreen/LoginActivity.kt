@@ -32,9 +32,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,17 +46,26 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
+import com.example.mejorapptgrupob.DataStoreManager
 import com.example.mejorapptgrupob.MainActivity
-import com.example.mejorapptgrupob.MainLayout
 import com.example.mejorapptgrupob.R
-import com.example.mejorapptgrupob.screens.loginScreen.ui.theme.MejorAppTGrupoBTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class LoginActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme
@@ -63,15 +74,46 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginLayout()
+                    val dataStore = DataStoreManager.dataStore
+                    LoginLayout(dataStore = dataStore)
                 }
             }
         }
     }
 }
 
+val USER_KEY = stringPreferencesKey("user_key")
+val PASSWORD_KEY = stringPreferencesKey("password_key")
+
+private suspend fun guardarPreferencias(dataStore: DataStore<Preferences>, username: String, password: String) {
+    dataStore.edit { preferences ->
+        preferences[USER_KEY] = username
+        preferences[PASSWORD_KEY] = password
+    }
+}
+
+suspend fun mostrarPreferencias(dataStore: DataStore<Preferences>) {
+    val preferences = dataStore.data.first()
+
+    val username = preferences[USER_KEY]
+    val password = preferences[PASSWORD_KEY]
+
+    println("Nombre de usuario: $username")
+    println("Contraseña: $password")
+}
+
 @Composable
-internal fun LoginLayout(){
+internal fun LoginLayout(dataStore: DataStore<Preferences>){
+
+    var username by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        val preferences = dataStore.data.first()
+        username = preferences[USER_KEY] ?: ""
+        password = preferences[PASSWORD_KEY] ?: ""
+    }
+    val coroutineScope = rememberCoroutineScope()
 
     val mContext = LocalContext.current
 
@@ -133,7 +175,7 @@ internal fun LoginLayout(){
             )
         }
 
-        Spacer(modifier = Modifier.height(250.dp))
+        Spacer(modifier = Modifier.height(130.dp))
 
         Column(
             Modifier
@@ -154,8 +196,8 @@ internal fun LoginLayout(){
                 border = if (isUserFocus) BorderStroke(2.dp, Color.Blue) else { BorderStroke(0.dp, Color.Transparent) }
             ) {
                 TextField(
-                    value = "",
-                    onValueChange = {  },
+                    value = username,
+                    onValueChange = { username = it  },
                     shape = RoundedCornerShape(40.dp),
                     placeholder = {Text(text ="Usuario")},
                     leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "") },
@@ -183,8 +225,8 @@ internal fun LoginLayout(){
                 border = if (isPasswordFocus) BorderStroke(2.dp, Color.Blue) else { BorderStroke(0.dp, Color.Transparent) }
             ) {
                 TextField(
-                    value = "",
-                    onValueChange = {  },
+                    value = password,
+                    onValueChange = { password = it },
                     shape = RoundedCornerShape(40.dp),
                     placeholder = {Text(text ="Contraseña")},
                     leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "") },
@@ -208,7 +250,12 @@ internal fun LoginLayout(){
                     containerColor = Color.White, // TODO --> CAMBIAR  COLORES
                     contentColor = Color.Magenta // TODO --> CAMBIAR  COLORES
                 ),
-                onClick = { /*TODO*/ }
+                onClick = {
+                    coroutineScope.launch {
+                        guardarPreferencias(dataStore, username, password)
+                        mostrarPreferencias(dataStore)
+                    }
+                },
             ) {
                 Text(text = "Iniciar sesión")
             }

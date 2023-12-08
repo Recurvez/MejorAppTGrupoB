@@ -55,8 +55,6 @@ dependencies {
 
     // Implementación de material theme
     implementation("androidx.compose.material3:material3:1.1.2")
-
-    // Para más iconos
     implementation("androidx.compose.material:material-icons-extended-android:1.5.4")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
@@ -69,11 +67,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-<<<<<<< HEAD
-    implementation("androidx.datastore:datastore-core:1.0.0")
-=======
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-core:1.0.0")
+
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -87,7 +83,7 @@ dependencies {
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
 
->>>>>>> 309f011d998f905bba20b218a1c694b454fbd0dd
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

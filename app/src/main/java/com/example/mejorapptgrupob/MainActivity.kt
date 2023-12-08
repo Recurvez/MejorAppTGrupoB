@@ -31,11 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-
 import com.example.mejorapptgrupob.internalDB.DBUtilities
-
-
-
 
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -45,40 +41,82 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.datastore.preferences.core.edit
+import androidx.lifecycle.lifecycleScope
+import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
 
 import com.example.mejorapptgrupob.screens.loginScreen.LoginActivity
+import com.example.mejorapptgrupob.screens.loginScreen.LoginLayout
+
 
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
+object DataStoreManager {
+    private var _dataStore: DataStore<Preferences>? = null
 
+    val dataStore: DataStore<Preferences>
+        get() = requireNotNull(_dataStore)
+
+    fun initializeDataStore(dataStore: DataStore<Preferences>) {
+        if (_dataStore == null) {
+            _dataStore = dataStore
+        }
+    }
+}
 
 class MainActivity : ComponentActivity() {
 
-    private val dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
+    val dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
-
-
-
+        DataStoreManager.initializeDataStore(dataStore)
         setContent {
             MaterialTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     MainLayout()
-
                 }
             }
         }
     }
+
+
+    private fun Preferences.isDataStoreEmpty(): Boolean {
+        return this.asMap().isEmpty()
+    }
+
+    fun clearPreferences() {
+        lifecycleScope.launch {
+            dataStore.edit { preferences ->
+                preferences.clear()
+            }
+        }
+    }
+    fun checkAndRedirect() {
+        lifecycleScope.launch {
+            val preferences = dataStore.data.first()
+            val mContext = this@MainActivity
+
+            if (preferences.isDataStoreEmpty()) {
+                val intent = Intent(mContext, LoginActivity::class.java)
+                mContext.startActivity(intent)
+            } else {
+                val intent = Intent(mContext, FirstActivity::class.java)
+                mContext.startActivity(intent)
+            }
+        }
+    }
+
 }
 
 @Composable
-internal fun MainLayout(){
+internal fun MainLayout() {
 
     val mContext = LocalContext.current
     // Creada fuera de la columna principal, al estar a nivel de surface
@@ -124,8 +162,9 @@ internal fun MainLayout(){
             )
         }
 
-        Spacer(modifier = Modifier
-            .height(360.dp)
+        Spacer(
+            modifier = Modifier
+                .height(360.dp)
         )
 
         Column(
@@ -137,12 +176,16 @@ internal fun MainLayout(){
         ) {
             Button(
                 onClick = {
-                    mContext.startActivity(Intent(mContext, LoginActivity::class.java))
+                    val mainActivity = (mContext as MainActivity)
+                    mainActivity.lifecycleScope.launch {
+                        mainActivity.checkAndRedirect()
+                    }
                 },
                 modifier = Modifier.width(140.dp)
             ) {
                 Text(text = "Iniciar sesión")
             }
+
 
             Spacer(modifier = Modifier.padding(10.dp))
 
@@ -156,4 +199,5 @@ internal fun MainLayout(){
             }
         }
     }
+
 }
