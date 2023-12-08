@@ -53,7 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.mejorapptgrupob.MainLayout
+
 import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.screens.firstScreen.ui.theme.MejorAppTGrupoBTheme
 import com.example.mejorapptgrupob.screens.infoScreen.InfoActivity
