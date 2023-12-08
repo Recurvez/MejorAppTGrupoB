@@ -79,7 +79,6 @@ internal fun LoginLayout(){
         painter = painterResource(id = R.drawable.loginscreen_bg) ,
         contentDescription = "background for login screen",
         alignment = Alignment.BottomCenter,
-        // El fondo no se llegaba a ajustar bien a la anchura del dispositivo
         contentScale = ContentScale.FillBounds
     )
 
