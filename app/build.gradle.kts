@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -9,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.mejorapptgrupob"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -50,6 +51,19 @@ android {
 }
 
 dependencies {
+
+    // Si el usuario no tiene internet, que se hace, que pasa con firebase?
+    // <uses-permission android:name="android.permission.INTERNET"/>
+    // más información al final de está página -> https://medium.com/firebase-tips-tricks/how-to-handle-exceptions-with-clean-architecture-and-firebase-5efbc13a1d54
+
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+
+    // Firebase
+    implementation("com.google.gms:google-services:4.4.0")
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-auth-ktx")
 
     // implementation("com.google.accompanist:accompanist systemuicontroller:0.27.0")
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".firebase.LoginMejorAppTGrupoB"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -30,7 +31,8 @@
             android:name=".screens.loginScreen.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.MejorAppTGrupoB" />
+            android:theme="@style/Theme.MejorAppTGrupoB"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".screens.firstScreen.FirstActivity"
             android:exported="false"

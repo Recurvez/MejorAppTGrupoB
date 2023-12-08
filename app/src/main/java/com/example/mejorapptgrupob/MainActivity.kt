@@ -50,6 +50,7 @@ import com.example.mejorapptgrupob.screens.loginScreen.LoginLayout
 
 
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
+import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -71,6 +72,7 @@ class MainActivity : ComponentActivity() {
     val dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
         DataStoreManager.initializeDataStore(dataStore)
@@ -107,7 +109,7 @@ class MainActivity : ComponentActivity() {
                 val intent = Intent(mContext, LoginActivity::class.java)
                 mContext.startActivity(intent)
             } else {
-                val intent = Intent(mContext, FirstActivity::class.java)
+                val intent = Intent(mContext, LoginActivity::class.java)
                 mContext.startActivity(intent)
             }
         }
