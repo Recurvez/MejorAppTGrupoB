@@ -1,16 +1,13 @@
 package com.example.mejorapptgrupob.screens.loginScreen
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,7 +43,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -59,12 +55,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.mejorapptgrupob.DataStoreManager
 import com.example.mejorapptgrupob.MainActivity
 import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
-import com.example.mejorapptgrupob.screens.loginScreen.rememberImeState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -284,7 +278,7 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
 
             Spacer(modifier = Modifier.height(50.dp))
 
-            var userCanRegister by remember { mutableStateOf(false) }
+            var userCanLogin by remember { mutableStateOf(false) }
             ElevatedButton(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White, // TODO --> CAMBIAR  COLORES
@@ -297,7 +291,7 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
 
                         // Para el acceso mediante Firebase
                         viewModel.signInWithEmailAndPassword(email = username, password = password){
-                            userCanRegister = true
+                            userCanLogin = true
                         }
 
                     }
@@ -306,7 +300,7 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                 Text(text = "Iniciar sesión")
             }
 
-            if(userCanRegister){
+            if(userCanLogin){
                 mcontext.startActivity(Intent(mcontext, FirstActivity::class.java))
             }
 

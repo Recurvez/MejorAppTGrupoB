@@ -91,6 +91,8 @@ class RegisterActivity : ComponentActivity() {
 @Composable
 internal fun RegisterLayout() {
 
+    val viewModel: RegisterScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel();
+
     val imeState by rememberImeState()
     val scrollState = rememberScrollState()
 
@@ -556,7 +558,7 @@ internal fun RegisterLayout() {
                         horizontalArrangement = Arrangement.Center
                     ) {
 
-                        var isRegister by remember { mutableStateOf(false) }
+                        var userCanRegister by remember { mutableStateOf(false) }
 
                         ElevatedButton(
                             colors = ButtonDefaults.buttonColors(
@@ -567,7 +569,10 @@ internal fun RegisterLayout() {
                             onClick = {
                                 if( !isEmailError && !isNameError && age.matches(regex = Regex("\\d+")) && passwordState == 0 && repeatPassword == password){
 
-                                    var result = FirebaseUtils.createUser(email, password)
+                                    // var result = FirebaseUtils.createUser(email, password)
+                                    viewModel.createUserWithEmailAndPassword(email, password){
+                                        userCanRegister = true
+                                    }
 
                                 } else {
                                     // Checkear todos los campos que faltan y ponerlos en rojo
@@ -578,6 +583,9 @@ internal fun RegisterLayout() {
 
                         ) {
                             Text(text = "Registrarme")
+                        }
+                        if(userCanRegister){
+                            context.startActivity(Intent(context, FirstActivity::class.java))
                         }
                     }
                 }
