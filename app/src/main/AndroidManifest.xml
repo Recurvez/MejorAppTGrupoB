@@ -35,6 +35,11 @@
             android:label="@string/title_activity_info"
             android:theme="@style/Theme.MejorAppTGrupoB" />
         <activity
+            android:name=".screens.testScreen.TestActivity"
+            android:exported="false"
+            android:label="@string/title_activity_test"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity
             android:name=".screens.registerScreen.RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"

@@ -1,5 +1,6 @@
 package com.example.mejorapptgrupob.screens.firstScreen
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -252,9 +253,12 @@ internal fun FirstLayout(){
                             Text(
                                 text = "Cerrar sesión",
                             )
-                            }
+                        }
                            },
-                    onClick = { mContext.startActivity(Intent(mContext, MainActivity::class.java)) }
+                    onClick = {
+                        mContext.startActivity(Intent(mContext, MainActivity::class.java))
+                        (mContext as? Activity)?.finish()
+                    }
                 )
             }
         }
