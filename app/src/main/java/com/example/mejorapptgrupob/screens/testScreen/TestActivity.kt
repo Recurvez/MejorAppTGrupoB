@@ -1,42 +1,74 @@
 package com.example.mejorapptgrupob.screens.testScreen
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.R
+import com.example.mejorapptgrupob.internalDB.DBUtilities
+import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
+import com.example.mejorapptgrupob.screens.userGuideScreen.UserGuideActivity
 
 class TestActivity : ComponentActivity() {
+    private lateinit var preguntas: List<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val inputStream = resources.openRawResource(R.raw.preguntas)
+        preguntas = QuestionList.readCSV(inputStream, this)
+        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme
@@ -45,15 +77,21 @@ class TestActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen()
+                    Screen(preguntas)
+
                 }
             }
         }
     }
 }
 
+
+
 @Composable
-fun Screen() {
+internal fun Screen(preguntas: List<String>) {
+
+    val mContext = LocalContext.current
+    val openDialog = remember { mutableStateOf(false) }
 
     val textValues = listOf(
         "Selecciona una Opción",
@@ -63,9 +101,10 @@ fun Screen() {
         "Siempre"
     )
 
-    var sliderPosition by remember { mutableStateOf(0f) }
+    var sliderPosition by remember  { mutableStateOf(0f) }
     var sliderPosition2 by remember { mutableStateOf(0f) }
     var sliderPosition3 by remember { mutableStateOf(0f) }
+    var sliderPosition4 by remember { mutableStateOf(0f) }
 
     Image(
         painter = painterResource(id = R.drawable.testscreen2_bg),
@@ -89,55 +128,85 @@ fun Screen() {
 
     }
     */
-
+    CustomProgressBar(progress = 0.0f)
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 30.dp),
+            .padding(top = 35.dp)
+    ) {
 
-        contentAlignment = Alignment.Center
-    ){
-        Column (
+        LazyColumn(
             modifier = Modifier
-                .padding(start = 20.dp, end = 20.dp)
-                .align(Alignment.TopCenter)
-        ){
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.Top,
+            contentPadding = PaddingValues(top = 20.dp, bottom = 60.dp)
+        ) {
 
-            SliderWithValueText(
-                sliderPosition = sliderPosition.toInt(),
-                onValueChange = {sliderPosition = it},
-                textValues = textValues,
-                labelText = "1. En los exámenes me sudan las manos"
-            )
+            item {
+                SliderWithValueText(
+                    sliderPosition = sliderPosition.toInt(),
+                    onValueChange = { sliderPosition = it },
+                    textValues = textValues,
+                    labelText = preguntas.getOrNull(0) ?: ""
+                )
 
-            Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(20.dp))
 
+                SliderWithValueText(
+                    sliderPosition = sliderPosition2.toInt(),
+                    onValueChange = { sliderPosition2 = it },
+                    textValues = textValues,
+                    labelText = preguntas.getOrNull(1) ?: ""
+                )
 
-            SliderWithValueText(
-                sliderPosition = sliderPosition2.toInt(),
-                onValueChange = {sliderPosition2 = it},
-                textValues = textValues,
-                labelText = "2. Cuando llevo rato haciendo el examen, siento molestias en el estómago y necesidad de defecar."
-            )
+                Spacer(modifier = Modifier.height(20.dp))
 
-            Spacer(modifier = Modifier.height(30.dp))
+                SliderWithValueText(
+                    sliderPosition = sliderPosition3.toInt(),
+                    onValueChange = { sliderPosition3 = it },
+                    textValues = textValues,
+                    labelText = preguntas.getOrNull(2) ?: ""
+                )
 
-            SliderWithValueText(
-                sliderPosition = sliderPosition3.toInt(),
-                onValueChange = {sliderPosition3 = it},
-                textValues = textValues,
-                labelText = "3. Al comenzar a leer el examen se me nubla la vista y no entiendo lo que leo."
-            )
+                Spacer(modifier = Modifier.height(30.dp))
 
-            Spacer(modifier = Modifier.height(60.dp))
-            //CustomProgressBar(progress = 0.01f)
+                SliderWithValueText(
+                    sliderPosition = sliderPosition4.toInt(),
+                    onValueChange = { sliderPosition4 = it },
+                    textValues = textValues,
+                    labelText = preguntas.getOrNull(3) ?: ""
+                )
 
+                Spacer(modifier = Modifier.height(30.dp))
+            }
+
+            item {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BotonAtras(onClick = {
+                        mContext.startActivity(Intent(mContext, FirstActivity::class.java))
+                    })
+                    BotonSiguiente(onClick = {
+                        if (sliderPosition != 0f && sliderPosition2 != 0f &&
+                            sliderPosition3 != 0f && sliderPosition4 != 0f
+                        ) {
+                            // Todos los sliders tienen respuestas válidas, navegar a la siguiente pantalla
+                            mContext.startActivity(Intent(mContext, TestActivity2::class.java))
+                        } else {
+                            openDialog.value = true
+                        }
+                    })
+                    AlertDialogExample(openDialog)
+                }
+            }
         }
-
-
     }
-
 }
+
 
 @Composable
 internal fun SliderWithValueText(
@@ -192,6 +261,7 @@ internal fun SliderWithValueText(
             )
             Spacer(modifier = Modifier.height(15.dp))
         }
+
     }
 }
 
@@ -203,19 +273,99 @@ internal fun CustomProgressBar(progress: Float) {
 
     Box(
         modifier = Modifier
-            .width(310.dp)
-            .height(10.dp)
-            .background(color = Color.LightGray, shape = RoundedCornerShape(4.dp))
-    ) {
+            .fillMaxSize()
+            .padding(horizontal = 40.dp, vertical = 10.dp),
+
+
+        ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth(progress)
+                .width(310.dp)
                 .height(10.dp)
-                .background(
-                    color = barColor,
-                    shape = RoundedCornerShape(4.dp)
-                )
+                .background(color = Color.LightGray, shape = RoundedCornerShape(4.dp))
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(progress)
+                    .height(10.dp)
+                    .background(
+                        color = barColor,
+                        shape = RoundedCornerShape(4.dp)
+                    )
+            )
+        }
+    }
+}
 
+
+
+@Composable
+fun BotonSiguiente(onClick: () -> Unit) {
+    val customColor = Color(0xFF21379E)
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(customColor),
+        modifier = Modifier
+
+
+    ) {
+        Text(text = "Siguiente")
+    }
+}
+
+
+@Composable
+fun BotonAtras(onClick: () -> Unit) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = Modifier
+
+    ) {
+        Text(text = "Anterior",
+            color = Color.White)
+    }
+}
+
+internal fun showAlertDialog(context: Context) {
+    AlertDialog.Builder(context)
+        .setTitle("Advertencia")
+        .setMessage("Debes responder a todas las preguntas.")
+        .setPositiveButton("Aceptar") { dialog, _ ->
+            dialog.dismiss()
+        }
+        .show()
+}
+
+@Composable
+internal fun AlertDialogExample(openDialog: MutableState<Boolean>) {
+    val customColor = Color(0xFF21379E)
+
+    if (openDialog.value) {
+        AlertDialog(
+            shape = RoundedCornerShape(20.dp),
+            onDismissRequest = { openDialog.value = false },
+            text = { Text(text = "Debes responder a todas las preguntas.") },
+            title = { Text(text = "Advertencia") },
+            confirmButton = {
+                Button(
+                    onClick = { openDialog.value = false },
+                    modifier = Modifier.padding(horizontal = 5.dp, vertical = 10.dp),
+                    shape = RoundedCornerShape(50.dp),
+                    colors = ButtonDefaults.buttonColors(customColor, contentColor = Color.White)
+                ) {
+                    Text(
+                        text = "Aceptar",
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp),
+                        color = Color.White
+                    )
+                }
+            }
         )
     }
 }
+
+
+
+
+
