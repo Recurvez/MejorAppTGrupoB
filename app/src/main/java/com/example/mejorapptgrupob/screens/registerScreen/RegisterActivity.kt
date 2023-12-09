@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -54,7 +55,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -62,13 +62,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.MainActivity
 import com.example.mejorapptgrupob.R
+import com.example.mejorapptgrupob.firebase.FirebaseUtils
 import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
-import com.example.mejorapptgrupob.screens.registerScreen.ui.theme.MejorAppTGrupoBTheme
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,8 +90,6 @@ class RegisterActivity : ComponentActivity() {
 
 @Composable
 internal fun RegisterLayout() {
-
-    val mcontext = LocalContext.current
 
     val imeState by rememberImeState()
     val scrollState = rememberScrollState()
@@ -558,15 +555,19 @@ internal fun RegisterLayout() {
                         .fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
                     ) {
+
+                        var isRegister by remember { mutableStateOf(false) }
+
                         ElevatedButton(
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.White, // TODO --> CAMBIAR  COLORES
                                 contentColor = Color.Magenta // TODO --> CAMBIAR  COLORES
                             ),
+
                             onClick = {
                                 if( !isEmailError && !isNameError && age.matches(regex = Regex("\\d+")) && passwordState == 0 && repeatPassword == password){
-                                    generateToast(context, "Se puede crear un usuario", Toast.LENGTH_SHORT)
-                                    context.startActivity(Intent(context, FirstActivity::class.java))
+
+                                    var result = FirebaseUtils.createUser(email, password)
 
                                 } else {
                                     // Checkear todos los campos que faltan y ponerlos en rojo
@@ -574,6 +575,7 @@ internal fun RegisterLayout() {
 
                                 }
                             }
+
                         ) {
                             Text(text = "Registrarme")
                         }

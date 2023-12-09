@@ -7,4 +7,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_user_guide">UserGuideActivity</string>
     <string name="title_activity_test">TestActivity</string>
+
 </resources>

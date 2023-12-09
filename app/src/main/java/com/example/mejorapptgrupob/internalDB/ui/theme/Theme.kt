@@ -1,4 +1,4 @@
-package com.example.mejorapptgrupob.screens.loginScreen.ui.theme
+package com.example.mejorapptgrupob.internalDB.ui.theme
 
 import android.app.Activity
 import android.os.Build

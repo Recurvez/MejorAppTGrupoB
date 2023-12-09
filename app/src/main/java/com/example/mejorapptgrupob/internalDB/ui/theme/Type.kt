@@ -1,4 +1,4 @@
-package com.example.mejorapptgrupob.screens.loginScreen.ui.theme
+package com.example.mejorapptgrupob.internalDB.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
