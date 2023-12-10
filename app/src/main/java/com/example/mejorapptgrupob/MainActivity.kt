@@ -50,6 +50,7 @@ import com.example.mejorapptgrupob.screens.loginScreen.LoginLayout
 
 
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
+import com.example.mejorapptgrupob.screens.testScreen.FinalScreen
 import com.google.firebase.FirebaseApp
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

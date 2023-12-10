@@ -6,31 +6,25 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
@@ -45,10 +39,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -58,16 +50,30 @@ import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.internalDB.DBUtilities
 import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
-import com.example.mejorapptgrupob.screens.userGuideScreen.UserGuideActivity
+
+object SliderUtility {
+    fun resetSliderValues(context: Context) {
+        saveSliderValue(context, "sliderPosition", 0f)
+        saveSliderValue(context, "sliderPosition2", 0f)
+        saveSliderValue(context, "sliderPosition3", 0f)
+        saveSliderValue(context, "sliderPosition4", 0f)
+    }
+}
 
 class TestActivity : ComponentActivity() {
     private lateinit var preguntas: List<String>
+
+    var savedSliderPosition1 by mutableStateOf(0f)
+    var savedSliderPosition2 by mutableStateOf(0f)
+    var savedSliderPosition3 by mutableStateOf(0f)
+    var savedSliderPosition4 by mutableStateOf(0f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val inputStream = resources.openRawResource(R.raw.preguntas)
         preguntas = QuestionList.readCSV(inputStream, this)
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
+
 
         setContent {
             MaterialTheme(
@@ -77,7 +83,7 @@ class TestActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen(preguntas)
+                    Screen(this@TestActivity, preguntas)
 
                 }
             }
@@ -86,9 +92,14 @@ class TestActivity : ComponentActivity() {
 }
 
 
+object GlobalLists {
+    val respuestasFisiologica = mutableListOf<Int>(0, 0, 0, 0, 0, 0, 0, 0, 0)
+    val respuestasCognitiva = mutableListOf<Int>(0, 0, 0, 0, 0, 0, 0)
+    val respuestasEvitacion = mutableListOf<Int>(0, 0, 0, 0)
+}
 
 @Composable
-internal fun Screen(preguntas: List<String>) {
+internal fun Screen(mContext: Context, preguntas: List<String>) {
 
     val mContext = LocalContext.current
     val openDialog = remember { mutableStateOf(false) }
@@ -101,10 +112,13 @@ internal fun Screen(preguntas: List<String>) {
         "Siempre"
     )
 
-    var sliderPosition by remember  { mutableStateOf(0f) }
-    var sliderPosition2 by remember { mutableStateOf(0f) }
-    var sliderPosition3 by remember { mutableStateOf(0f) }
-    var sliderPosition4 by remember { mutableStateOf(0f) }
+    var sliderPosition by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition")) }
+    var sliderPosition2 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition2")) }
+    var sliderPosition3 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition3")) }
+    var sliderPosition4 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition4")) }
+
+
+
 
     Image(
         painter = painterResource(id = R.drawable.testscreen2_bg),
@@ -146,7 +160,10 @@ internal fun Screen(preguntas: List<String>) {
             item {
                 SliderWithValueText(
                     sliderPosition = sliderPosition.toInt(),
-                    onValueChange = { sliderPosition = it },
+                    onValueChange = {
+                        sliderPosition = it
+                        saveSliderValue(mContext, "sliderPosition", it)
+                    },
                     textValues = textValues,
                     labelText = preguntas.getOrNull(0) ?: ""
                 )
@@ -155,7 +172,8 @@ internal fun Screen(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition2.toInt(),
-                    onValueChange = { sliderPosition2 = it },
+                    onValueChange = { sliderPosition2 = it
+                        saveSliderValue(mContext, "sliderPosition2", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(1) ?: ""
                 )
@@ -164,7 +182,8 @@ internal fun Screen(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition3.toInt(),
-                    onValueChange = { sliderPosition3 = it },
+                    onValueChange = { sliderPosition3 = it
+                        saveSliderValue(mContext, "sliderPosition3", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(2) ?: ""
                 )
@@ -173,7 +192,8 @@ internal fun Screen(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition4.toInt(),
-                    onValueChange = { sliderPosition4 = it },
+                    onValueChange = { sliderPosition4 = it
+                        saveSliderValue(mContext, "sliderPosition4", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(3) ?: ""
                 )
@@ -191,11 +211,18 @@ internal fun Screen(preguntas: List<String>) {
                         mContext.startActivity(Intent(mContext, FirstActivity::class.java))
                     })
                     BotonSiguiente(onClick = {
-                        if (sliderPosition != 0f && sliderPosition2 != 0f &&
-                            sliderPosition3 != 0f && sliderPosition4 != 0f
+                        if (sliderPosition != 0f || sliderPosition2 != 0f ||
+                            sliderPosition3 != 0f || sliderPosition4 != 0f
                         ) {
+                            GlobalLists.respuestasFisiologica[0] = mapearValor(sliderPosition)
+                            GlobalLists.respuestasCognitiva[0] = mapearValor(sliderPosition2)
+                            GlobalLists.respuestasFisiologica[1] = mapearValor(sliderPosition3)
+                            GlobalLists.respuestasCognitiva[1] = mapearValor(sliderPosition4)
+
                             // Todos los sliders tienen respuestas válidas, navegar a la siguiente pantalla
                             mContext.startActivity(Intent(mContext, TestActivity2::class.java))
+
+
                         } else {
                             openDialog.value = true
                         }
@@ -207,6 +234,30 @@ internal fun Screen(preguntas: List<String>) {
     }
 }
 
+
+
+
+internal fun loadSliderValue(context: Context, key: String): Float {
+    val sharedPreferences = context.getSharedPreferences("slider_values", Context.MODE_PRIVATE)
+    return sharedPreferences.getFloat(key, 0f)
+}
+
+internal fun saveSliderValue(context: Context, key: String, value: Float) {
+    val sharedPreferences = context.getSharedPreferences("slider_values", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.putFloat(key, value)
+    editor.apply()
+}
+internal fun mapearValor(valorSlider: Float): Int {
+    return when (valorSlider.toInt()) {
+        1 -> 0 // "Nunca"
+        2 -> 1 // "En Pocas Ocasiones"
+        3 -> 2 // "Con Cierta Frecuencia"
+        4 -> 3 // "A Menudo o Casi Siempre"
+        5 -> 4 // "Siempre"
+        else -> 0 // Por defecto, para "Selecciona una opción"
+    }
+}
 
 @Composable
 internal fun SliderWithValueText(
@@ -269,7 +320,7 @@ internal fun SliderWithValueText(
 
 @Composable
 internal fun CustomProgressBar(progress: Float) {
-    val barColor = if (progress > 0f) Color(0xFF573F60) else Color.LightGray
+    val barColor = if (progress > 0f) Color(0xFF21379E) else Color.LightGray
 
     Box(
         modifier = Modifier
@@ -307,7 +358,6 @@ fun BotonSiguiente(onClick: () -> Unit) {
         colors = ButtonDefaults.buttonColors(customColor),
         modifier = Modifier
 
-
     ) {
         Text(text = "Siguiente")
     }
@@ -342,14 +392,14 @@ internal fun AlertDialogExample(openDialog: MutableState<Boolean>) {
 
     if (openDialog.value) {
         AlertDialog(
-            shape = RoundedCornerShape(20.dp),
+            shape = RoundedCornerShape(15.dp),
             onDismissRequest = { openDialog.value = false },
             text = { Text(text = "Debes responder a todas las preguntas.") },
             title = { Text(text = "Advertencia") },
             confirmButton = {
                 Button(
                     onClick = { openDialog.value = false },
-                    modifier = Modifier.padding(horizontal = 5.dp, vertical = 10.dp),
+                    modifier = Modifier.padding(horizontal = 5.dp, vertical = 5.dp),
                     shape = RoundedCornerShape(50.dp),
                     colors = ButtonDefaults.buttonColors(customColor, contentColor = Color.White)
                 ) {

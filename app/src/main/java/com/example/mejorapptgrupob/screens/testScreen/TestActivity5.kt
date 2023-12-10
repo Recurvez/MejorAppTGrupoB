@@ -1,7 +1,9 @@
 package com.example.mejorapptgrupob.screens.testScreen
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -31,6 +33,15 @@ import androidx.compose.ui.unit.dp
 import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.internalDB.DBUtilities
 
+object SliderUtility5 {
+    fun resetSliderValues(context: Context) {
+        saveSliderValue(context, "sliderPosition17", 0f)
+        saveSliderValue(context, "sliderPosition18", 0f)
+        saveSliderValue(context, "sliderPosition19", 0f)
+        saveSliderValue(context, "sliderPosition20", 0f)
+    }
+}
+
 class TestActivity5 : ComponentActivity() {
     private lateinit var preguntas: List<String>
 
@@ -47,7 +58,7 @@ class TestActivity5 : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen5(preguntas)
+                    Screen5(this@TestActivity5, preguntas)
                 }
             }
         }
@@ -55,7 +66,11 @@ class TestActivity5 : ComponentActivity() {
 }
 
 @Composable
-internal fun Screen5(preguntas: List<String>) {
+internal fun Screen5(mContext: Context, preguntas: List<String>) {
+
+    val respuestasTemporales = remember { mutableStateOf(listOf<Int>(0, 0, 0, 0)) }
+    val respuestasTemporales2 = remember { mutableStateOf(listOf<Int>(0, 0, 0, 0)) }
+    val respuestasTemporales3 = remember { mutableStateOf(listOf<Int>(0, 0, 0, 0)) }
 
     val mContext = LocalContext.current
     val openDialog = remember { mutableStateOf(false) }
@@ -68,10 +83,11 @@ internal fun Screen5(preguntas: List<String>) {
         "Siempre"
     )
 
-    var sliderPosition17 by remember { mutableStateOf(0f) }
-    var sliderPosition18 by remember { mutableStateOf(0f) }
-    var sliderPosition19 by remember { mutableStateOf(0f) }
-    var sliderPosition20 by remember { mutableStateOf(0f) }
+    var sliderPosition17 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition17")) }
+    var sliderPosition18 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition18")) }
+    var sliderPosition19 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition19")) }
+    var sliderPosition20 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition20")) }
+
 
     Image(
         painter = painterResource(id = R.drawable.testscreen2_bg),
@@ -113,7 +129,8 @@ internal fun Screen5(preguntas: List<String>) {
             item {
                 SliderWithValueText(
                     sliderPosition = sliderPosition17.toInt(),
-                    onValueChange = { sliderPosition17 = it },
+                    onValueChange = { sliderPosition17 = it
+                        saveSliderValue(mContext, "sliderPosition17", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(16) ?: ""
                 )
@@ -122,7 +139,8 @@ internal fun Screen5(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition18.toInt(),
-                    onValueChange = { sliderPosition18 = it },
+                    onValueChange = { sliderPosition18 = it
+                        saveSliderValue(mContext, "sliderPosition18", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(17) ?: ""
                 )
@@ -131,7 +149,8 @@ internal fun Screen5(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition19.toInt(),
-                    onValueChange = { sliderPosition19 = it },
+                    onValueChange = { sliderPosition19 = it
+                        saveSliderValue(mContext, "sliderPosition19", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(18) ?: ""
                 )
@@ -140,7 +159,8 @@ internal fun Screen5(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition20.toInt(),
-                    onValueChange = { sliderPosition20 = it },
+                    onValueChange = { sliderPosition20 = it
+                        saveSliderValue(mContext, "sliderPosition20", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(19) ?: ""
                 )
@@ -158,11 +178,21 @@ internal fun Screen5(preguntas: List<String>) {
                         mContext.startActivity(Intent(mContext, TestActivity4::class.java))
                     })
                     BotonSiguiente(onClick = {
-                        if (sliderPosition17 != 0f && sliderPosition18 != 0f &&
-                            sliderPosition19 != 0f && sliderPosition20 != 0f
+                        if (sliderPosition17 != 0f || sliderPosition18 != 0f ||
+                            sliderPosition19 != 0f || sliderPosition20 != 0f
                         ) {
-                            // Todos los sliders tienen respuestas válidas, navegar a la siguiente pantalla
-                            //Aquí intent hacia la pantalla de resultados
+                            GlobalLists.respuestasFisiologica[7] = mapearValor(sliderPosition17)
+                            GlobalLists.respuestasCognitiva[6] = mapearValor(sliderPosition18)
+                            GlobalLists.respuestasEvitacion[3] = mapearValor(sliderPosition19)
+                            GlobalLists.respuestasFisiologica[8] = mapearValor(sliderPosition20)
+
+                            Log.d("TAG", "Respuestas Fisiológicas: ${GlobalLists.respuestasFisiologica}")
+                            Log.d("TAG", "Respuestas Cognitivas: ${GlobalLists.respuestasCognitiva}")
+                            Log.d("TAG", "Respuestas Evitación: ${GlobalLists.respuestasEvitacion}")
+
+
+
+                            mContext.startActivity(Intent(mContext, FinalActivity::class.java))
                         } else {
                             openDialog.value = true
                         }
