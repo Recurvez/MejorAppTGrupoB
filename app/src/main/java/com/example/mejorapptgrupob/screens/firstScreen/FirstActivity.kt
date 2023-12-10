@@ -100,6 +100,8 @@ class FirstActivity : ComponentActivity() {
 
 @Composable
 internal fun FirstLayout(){
+    var model: LogoutViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+
     val mContext = LocalContext.current
     // Fondo que ocupa toda la pantalla
     Image(
@@ -256,6 +258,7 @@ internal fun FirstLayout(){
                         }
                            },
                     onClick = {
+                        model.logout()
                         mContext.startActivity(Intent(mContext, MainActivity::class.java))
                         (mContext as? Activity)?.finish()
                     }
