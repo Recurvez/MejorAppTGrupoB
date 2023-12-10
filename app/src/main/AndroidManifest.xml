@@ -13,6 +13,16 @@
         android:theme="@style/Theme.MejorAppTGrupoB"
         tools:targetApi="31">
         <activity
+            android:name=".screens.adviceScreen.AdviceActivity"
+            android:exported="false"
+            android:label="@string/title_activity_advice"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity
+            android:name=".screens.AdviceActivity"
+            android:exported="false"
+            android:label="@string/title_activity_advice"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity
             android:name=".screens.userGuideScreen.UserGuideActivity"
             android:exported="false"
             android:label="@string/title_activity_user_guide"
