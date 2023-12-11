@@ -43,13 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
-import com.example.mejorapptgrupob.screens.adviceScreen.AdviceActivity
 import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
-
-import com.example.mejorapptgrupob.screens.infoScreen.InfoActivity
-
 import com.example.mejorapptgrupob.screens.firstScreen.FirstLayout
-
 
 import com.example.mejorapptgrupob.screens.loginScreen.LoginActivity
 import com.example.mejorapptgrupob.screens.loginScreen.LoginLayout
@@ -84,8 +79,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntasv1),this)
-
+        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
         DataStoreManager.initializeDataStore(dataStore)
 
         setContent {
@@ -94,14 +88,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     // Lo de si esta logueado que entre directamente, lo de las prefes de adri aún no va
                     if(FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()){
                         MainLayout()
                     } else {
                         FirstLayout()
                     }
-
                 }
             }
         }

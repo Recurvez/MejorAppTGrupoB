@@ -75,6 +75,7 @@ class TestActivity : ComponentActivity() {
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntasv1),this)
 
 
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme
@@ -211,8 +212,8 @@ internal fun Screen(mContext: Context, preguntas: List<String>) {
                         mContext.startActivity(Intent(mContext, FirstActivity::class.java))
                     })
                     BotonSiguiente(onClick = {
-                        if (sliderPosition != 0f && sliderPosition2 != 0f &&
-                            sliderPosition3 != 0f && sliderPosition4 != 0f
+                        if (sliderPosition != 0f || sliderPosition2 != 0f ||
+                            sliderPosition3 != 0f || sliderPosition4 != 0f
                         ) {
                             GlobalLists.respuestasFisiologica[0] = mapearValor(sliderPosition)
                             GlobalLists.respuestasCognitiva[0] = mapearValor(sliderPosition2)
