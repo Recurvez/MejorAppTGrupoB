@@ -60,10 +60,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
     // Firebase
-    implementation("com.google.gms:google-services:4.4.0")
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    //     implementation("com.google.gms:google-services:4.4.0") no descomentar que se rompe
+    implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-auth-ktx")
+    // firestore
+    implementation("com.google.firebase:firebase-firestore-ktx") {
+        exclude("com.google.protobuf, module: protobuf-java")
+    }
 
     // implementation("com.google.accompanist:accompanist systemuicontroller:0.27.0")
 

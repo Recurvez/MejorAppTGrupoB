@@ -52,7 +52,7 @@
             android:name=".screens.loginScreen.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.MejorAppTGrupoB" />
+            android:theme="@style/Theme.MejorAppTGrupoB"/>
         <activity
             android:name=".screens.firstScreen.FirstActivity"
             android:exported="false"
