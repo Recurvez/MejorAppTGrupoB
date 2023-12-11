@@ -32,6 +32,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.internalDB.DBUtilities
+import com.example.mejorapptgrupob.screens.adviceScreen.AdviceActivity
+import com.example.mejorapptgrupob.screens.adviceScreen.CalcFactores
 
 object SliderUtility5 {
     fun resetSliderValues(context: Context) {
@@ -47,8 +49,8 @@ class TestActivity5 : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
-        val inputStream = resources.openRawResource(R.raw.preguntas)
+        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntasv1), this)
+        val inputStream = resources.openRawResource(R.raw.preguntasv1)
         preguntas = QuestionList.readCSV(inputStream, this)
         setContent {
             MaterialTheme(
@@ -83,10 +85,38 @@ internal fun Screen5(mContext: Context, preguntas: List<String>) {
         "Siempre"
     )
 
-    var sliderPosition17 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition17")) }
-    var sliderPosition18 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition18")) }
-    var sliderPosition19 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition19")) }
-    var sliderPosition20 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition20")) }
+    var sliderPosition17 by remember {
+        mutableStateOf(
+            loadSliderValue(
+                mContext,
+                "sliderPosition17"
+            )
+        )
+    }
+    var sliderPosition18 by remember {
+        mutableStateOf(
+            loadSliderValue(
+                mContext,
+                "sliderPosition18"
+            )
+        )
+    }
+    var sliderPosition19 by remember {
+        mutableStateOf(
+            loadSliderValue(
+                mContext,
+                "sliderPosition19"
+            )
+        )
+    }
+    var sliderPosition20 by remember {
+        mutableStateOf(
+            loadSliderValue(
+                mContext,
+                "sliderPosition20"
+            )
+        )
+    }
 
 
     Image(
@@ -129,8 +159,10 @@ internal fun Screen5(mContext: Context, preguntas: List<String>) {
             item {
                 SliderWithValueText(
                     sliderPosition = sliderPosition17.toInt(),
-                    onValueChange = { sliderPosition17 = it
-                        saveSliderValue(mContext, "sliderPosition17", it)},
+                    onValueChange = {
+                        sliderPosition17 = it
+                        saveSliderValue(mContext, "sliderPosition17", it)
+                    },
                     textValues = textValues,
                     labelText = preguntas.getOrNull(16) ?: ""
                 )
@@ -139,8 +171,10 @@ internal fun Screen5(mContext: Context, preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition18.toInt(),
-                    onValueChange = { sliderPosition18 = it
-                        saveSliderValue(mContext, "sliderPosition18", it)},
+                    onValueChange = {
+                        sliderPosition18 = it
+                        saveSliderValue(mContext, "sliderPosition18", it)
+                    },
                     textValues = textValues,
                     labelText = preguntas.getOrNull(17) ?: ""
                 )
@@ -149,8 +183,10 @@ internal fun Screen5(mContext: Context, preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition19.toInt(),
-                    onValueChange = { sliderPosition19 = it
-                        saveSliderValue(mContext, "sliderPosition19", it)},
+                    onValueChange = {
+                        sliderPosition19 = it
+                        saveSliderValue(mContext, "sliderPosition19", it)
+                    },
                     textValues = textValues,
                     labelText = preguntas.getOrNull(18) ?: ""
                 )
@@ -159,8 +195,10 @@ internal fun Screen5(mContext: Context, preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition20.toInt(),
-                    onValueChange = { sliderPosition20 = it
-                        saveSliderValue(mContext, "sliderPosition20", it)},
+                    onValueChange = {
+                        sliderPosition20 = it
+                        saveSliderValue(mContext, "sliderPosition20", it)
+                    },
                     textValues = textValues,
                     labelText = preguntas.getOrNull(19) ?: ""
                 )
@@ -178,26 +216,33 @@ internal fun Screen5(mContext: Context, preguntas: List<String>) {
                         mContext.startActivity(Intent(mContext, TestActivity4::class.java))
                     })
                     BotonSiguiente(onClick = {
-                        if (sliderPosition17 != 0f || sliderPosition18 != 0f ||
-                            sliderPosition19 != 0f || sliderPosition20 != 0f
+                        if (sliderPosition17 != 0f && sliderPosition18 != 0f &&
+                            sliderPosition19 != 0f && sliderPosition20 != 0f
                         ) {
                             GlobalLists.respuestasFisiologica[7] = mapearValor(sliderPosition17)
                             GlobalLists.respuestasCognitiva[6] = mapearValor(sliderPosition18)
                             GlobalLists.respuestasEvitacion[3] = mapearValor(sliderPosition19)
                             GlobalLists.respuestasFisiologica[8] = mapearValor(sliderPosition20)
 
-                            Log.d("TAG", "Respuestas Fisiológicas: ${GlobalLists.respuestasFisiologica}")
-                            Log.d("TAG", "Respuestas Cognitivas: ${GlobalLists.respuestasCognitiva}")
-                            Log.d("TAG", "Respuestas Evitación: ${GlobalLists.respuestasEvitacion}")
+                            val sumC = GlobalLists.respuestasCognitiva.sum()
+                            val sumF = GlobalLists.respuestasFisiologica.sum()
+                            val sumE = GlobalLists.respuestasEvitacion.sum()
 
 
+                            // Inicia la actividad de consejos
+                            val intent = Intent(mContext, AdviceActivity::class.java).apply {
+                                putExtra("sumC", sumC)
+                                putExtra("sumF", sumF)
+                                putExtra("sumE", sumE)
+                            }
+                            mContext.startActivity(intent)
 
-                            mContext.startActivity(Intent(mContext, FinalActivity::class.java))
                         } else {
                             openDialog.value = true
+
+
                         }
                     })
-                    AlertDialogExample(openDialog)
                 }
             }
         }

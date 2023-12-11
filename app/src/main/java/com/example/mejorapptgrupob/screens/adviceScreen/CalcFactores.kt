@@ -7,6 +7,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 
+
 class CalcFactores {
     @Composable
     fun InterpretarTest(respuestas: List<Int>) {
@@ -20,37 +21,38 @@ class CalcFactores {
 
     @Composable
 // Funciones para calcular los niveles de respuesta
-    fun calcularNivelCognitivo(respuestas: List<Int>): String {
-        val puntuacion = respuestas.sum()
+    fun calcularNivelCognitivo(respuestasFisiologica: List<Int>): Int {
+        val puntuacion = respuestasFisiologica.sum()
         val nivel = when (puntuacion) {
             in 0..14 -> "bajo"
             in 15..21 -> "medio"
             else -> "alto"
         }
-        return nivel
+        return puntuacion
     }
 
     @Composable
-    fun calcularNivelFisico(respuestas: List<Int>): String {
-        val puntuacion = respuestas.sum()
+    fun calcularNivelFisico(respuestasFisico: List<Int>): Int {
+        val puntuacion = respuestasFisico.sum()
         val nivel = when (puntuacion) {
             in 0..14 -> "bajo"
             in 15..23 -> "medio"
             else -> "alto"
         }
-        return nivel
+        return puntuacion
     }
 
     @Composable
-    fun calcularNivelEvitacion(respuestas: List<Int>): String {
-        val puntuacion = respuestas.sum()
+    fun calcularNivelEvitacion(respuestasEvitacion: List<Int>): Int {
+        val puntuacion = respuestasEvitacion.sum()
         val nivel = when (puntuacion) {
             in 0..1 -> "bajo"
             in 2..3 -> "medio"
             else -> "alto"
         }
-        return nivel
+        return puntuacion
     }
+
     @Composable
 // Función para calcular la puntuación combinada
     fun calcularPuntuacionCombinada(
@@ -60,6 +62,4 @@ class CalcFactores {
     ): Int {
         return respuestasCognitivo.sum() + respuestasFisico.sum() + respuestasEvitacion.sum()
     }
-
-
 }
