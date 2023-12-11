@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".firebase.LoginMejorAppTGrupoB"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,14 +14,32 @@
         android:theme="@style/Theme.MejorAppTGrupoB"
         tools:targetApi="31">
         <activity
+
             android:name=".screens.adviceScreen.AdviceActivity"
             android:exported="false"
             android:label="@string/title_activity_advice"
             android:theme="@style/Theme.MejorAppTGrupoB" />
+
         <activity
-            android:name=".screens.AdviceActivity"
+            android:name=".screens.testScreen.TestActivity5"
             android:exported="false"
-            android:label="@string/title_activity_advice"
+            android:label="@string/title_activity_test5"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity
+            android:name=".screens.testScreen.TestActivity4"
+            android:exported="false"
+            android:label="@string/title_activity_test4"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity
+            android:name=".screens.testScreen.TestActivity3"
+            android:exported="false"
+            android:label="@string/title_activity_test3"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity
+            android:name=".screens.testScreen.TestActivity2"
+            android:exported="false"
+            android:label="@string/title_activity_test2"
+
             android:theme="@style/Theme.MejorAppTGrupoB" />
         <activity
             android:name=".screens.userGuideScreen.UserGuideActivity"
@@ -31,7 +50,8 @@
             android:name=".screens.loginScreen.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.MejorAppTGrupoB" />
+            android:theme="@style/Theme.MejorAppTGrupoB"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".screens.firstScreen.FirstActivity"
             android:exported="false"
@@ -41,6 +61,11 @@
             android:name=".screens.infoScreen.InfoActivity"
             android:exported="false"
             android:label="@string/title_activity_info"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity
+            android:name=".screens.testScreen.TestActivity"
+            android:exported="false"
+            android:label="@string/title_activity_test"
             android:theme="@style/Theme.MejorAppTGrupoB" />
         <activity
             android:name=".screens.registerScreen.RegisterActivity"

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "997323171448",
+    "project_id": "mentalappequipob",
+    "storage_bucket": "mentalappequipob.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997323171448:android:6a4913a99263f862a0ef8d",
+        "android_client_info": {
+          "package_name": "com.example.mejorapptgrupob"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtA4zVF3gJBzROhrOfhgZuUY5_IXbcKv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

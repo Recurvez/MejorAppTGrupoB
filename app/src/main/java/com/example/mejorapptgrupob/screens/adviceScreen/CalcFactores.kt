@@ -30,6 +30,7 @@ class CalcFactores {
         return nivel
     }
 
+    @Composable
     fun calcularNivelFisico(respuestas: List<Int>): String {
         val puntuacion = respuestas.sum()
         val nivel = when (puntuacion) {
@@ -40,6 +41,7 @@ class CalcFactores {
         return nivel
     }
 
+    @Composable
     fun calcularNivelEvitacion(respuestas: List<Int>): String {
         val puntuacion = respuestas.sum()
         val nivel = when (puntuacion) {
@@ -58,45 +60,6 @@ class CalcFactores {
     ): Int {
         return respuestasCognitivo.sum() + respuestasFisico.sum() + respuestasEvitacion.sum()
     }
-    class Consejo(
-        val numero: Int,
-        val titulo: String,
-        val texto: String
-    )
-    @Composable
-    fun obtenerConsejos(numerosConsejos: List<Int>): List<Consejo> {
-        // Abre el archivo CSV
-        val archivo = File("consejos.csv")
 
-        // Lee el archivo CSV
-        val reader = BufferedReader(FileReader(archivo))
 
-        // Crea una lista de consejos
-        val consejos = mutableListOf<Consejo>()
-
-        // Lee cada línea del archivo CSV
-        for (linea in reader.lines()) {
-            // Divide la línea en un mapa
-            val mapa = Json.decodeFromString(linea.split(";") as String) as Map<String, Int>
-
-            // Comprueba si el número de consejo está en la lista
-            if (numerosConsejos.contains(mapa["numero"] as Int)) {
-                // Crea un consejo
-                val consejo = Consejo(
-                    numero = mapa["numero"] as Int,
-                    titulo = mapa["titulo"] as String,
-                    texto = mapa["texto"] as String
-                )
-
-                // Añade el consejo a la lista
-                consejos.add(consejo)
-            }
-        }
-
-        // Cierra el archivo CSV
-        reader.close()
-
-        // Devuelve la lista de consejos
-        return consejos
-    }
 }

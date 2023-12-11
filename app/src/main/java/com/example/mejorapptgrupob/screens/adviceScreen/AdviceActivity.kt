@@ -3,13 +3,34 @@ package com.example.mejorapptgrupob.screens.adviceScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.example.mejorapptgrupob.screens.adviceScreen.ui.theme.MejorAppTGrupoBTheme
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.mejorapptgrupob.R
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
-import kotlinx.serialization.json.Json
 
 
 class AdviceActivity : ComponentActivity() {
@@ -17,63 +38,93 @@ class AdviceActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MejorAppTGrupoBTheme {
-                // A surface container using the 'background' color from the theme
-
+            MaterialTheme(
+                colorScheme = MaterialTheme.colorScheme
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val consejos = obtenerConsejos(listOf(intent.getIntExtra("numero", -1)))
+                    AdviceLayout(consejos[0])
                 }
             }
         }
     }
-
-@Composable
-fun InterpretarTest(respuestas: List<Int>) {
-    // Calcula los niveles de respuesta
-    val nivelCognitivo = calcularNivelCognitivo(respuestas)
-    val nivelFisico = calcularNivelFisico(respuestas)
-    val nivelEvitacion = calcularNivelEvitacion(respuestas)
-
-
 }
 
 @Composable
-// Funciones para calcular los niveles de respuesta
-fun calcularNivelCognitivo(respuestas: List<Int>): String {
-    val puntuacion = respuestas.sum()
-    val nivel = when (puntuacion) {
-        in 0..14 -> "bajo"
-        in 15..21 -> "medio"
-        else -> "alto"
-    }
-    return nivel
-}
+internal fun AdviceLayout(consejo: Consejo) {
+    val mContext = LocalContext.current
 
-fun calcularNivelFisico(respuestas: List<Int>): String {
-    val puntuacion = respuestas.sum()
-    val nivel = when (puntuacion) {
-        in 0..14 -> "bajo"
-        in 15..23 -> "medio"
-        else -> "alto"
-    }
-    return nivel
-}
+    Image(
+        painter = painterResource(R.drawable.infoscreen_bg),
+        contentDescription = "fondo de la pantalla de consejos",
+        contentScale = ContentScale.FillBounds,
+        alignment = Alignment.BottomCenter
+    )
 
-fun calcularNivelEvitacion(respuestas: List<Int>): String {
-    val puntuacion = respuestas.sum()
-    val nivel = when (puntuacion) {
-        in 0..1 -> "bajo"
-        in 2..3 -> "medio"
-        else -> "alto"
+    Column (
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column( modifier = Modifier.fillMaxWidth(),
+
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ) {
+            Spacer(modifier = Modifier.height(110.dp))
+            Text(
+                text = "¡HAS LLEGADO AL FINAL!",
+
+                style = MaterialTheme.typography.titleLarge, fontSize = 25.sp, fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.padding(5.dp))
+
+            Text(
+                text = "A continuación te dejamos unos consejos que pueden ayudarte",
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.titleMedium,fontSize = 15.sp,fontWeight = FontWeight.Bold,
+            )
+
+        }
+
+        Spacer(modifier = Modifier.padding(15.dp))
+
+        Column {
+
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = consejo.titulo,
+                    style = MaterialTheme.typography.headlineMedium
+                )
+                Text(
+                    text = consejo.texto,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Button(
+                    onClick = {
+                        // Marca el consejo como leído
+                    }
+                ) {
+                    Text("Marcar como leído")
+                }
+            }
+            }
+        }
     }
-    return nivel
-}
-@Composable
-// Función para calcular la puntuación combinada
-fun calcularPuntuacionCombinada(
-    respuestasCognitivo: List<Int>,
-    respuestasFisico: List<Int>,
-    respuestasEvitacion: List<Int>
-): Int {
-    return respuestasCognitivo.sum() + respuestasFisico.sum() + respuestasEvitacion.sum()
 }
 
 class Consejo(
@@ -95,15 +146,15 @@ fun obtenerConsejos(numerosConsejos: List<Int>): List<Consejo> {
     // Lee cada línea del archivo CSV
     for (linea in reader.lines()) {
         // Divide la línea en un mapa
-        val mapa = Json.decodeFromString(linea.split(";") as String) as Map<String, Int>
+        val mapa = Json.decodeFromString(linea.split(";").toString()) as Map<String, Int>
 
         // Comprueba si el número de consejo está en la lista
         if (numerosConsejos.contains(mapa["numero"] as Int)) {
             // Crea un consejo
             val consejo = Consejo(
                 numero = mapa["numero"] as Int,
-                titulo = mapa["titulo"] as String,
-                texto = mapa["texto"] as String
+                titulo = mapa["titulo"].toString(),
+                texto = mapa["texto"].toString()
             )
 
             // Añade el consejo a la lista
@@ -117,7 +168,6 @@ fun obtenerConsejos(numerosConsejos: List<Int>): List<Consejo> {
     // Devuelve la lista de consejos
     return consejos
 }
-
 
 
 
