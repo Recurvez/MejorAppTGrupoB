@@ -38,6 +38,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +46,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.focus.onFocusChanged
@@ -52,9 +54,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -74,6 +79,7 @@ class LoginActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             MaterialTheme(
@@ -83,8 +89,7 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val dataStore = DataStoreManager.dataStore
-                    LoginLayout(dataStore = dataStore)
+                    LoginLayout(dataStore = DataStoreManager.dataStore)
                 }
             }
         }
@@ -112,8 +117,10 @@ suspend fun mostrarPreferencias(dataStore: DataStore<Preferences>) {
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun LoginLayout(dataStore: DataStore<Preferences>){
+    val dataStore = DataStoreManager.dataStore
 
     var mcontext = LocalContext.current
 
@@ -124,10 +131,16 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
     val imeState by rememberImeState()
     val scrollState = rememberScrollState()
 
+
     LaunchedEffect(key1 = imeState){
         if(imeState){
             scrollState.scrollTo(scrollState.value)
         }
+    }
+    var isKeyboardVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(imeState) {
+        isKeyboardVisible = imeState
     }
 
     var username by remember { mutableStateOf("") }
@@ -138,6 +151,8 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
         username = preferences[USER_KEY] ?: ""
         password = preferences[PASSWORD_KEY] ?: ""
     }
+
+
     val coroutineScope = rememberCoroutineScope()
 
     val mContext = LocalContext.current
@@ -153,6 +168,15 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
     // ver el campo contraseña
     // Poner también que cuando le des a la flecha pase del usuario
     // a la contraseña
+
+    var isPasswordFocus by remember {
+        mutableStateOf(false)
+    }
+
+    var isUserFocus by remember {
+        mutableStateOf(false)
+    }
+
 
     Column {
         Column(
@@ -185,7 +209,8 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(if (isKeyboardVisible) 0.dp else 60.dp))
+
 
         // Icon
         Row(
@@ -202,19 +227,21 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
             )
         }
 
-        Spacer(modifier = Modifier.height(60.dp))
+
+        Spacer(modifier = Modifier.height(if (isKeyboardVisible) 0.dp else 60.dp))
+
 
         Row(
             Modifier
                 .fillMaxWidth()
-                .height(40.dp), horizontalArrangement = Arrangement.Center) {
+                .height(20.dp), horizontalArrangement = Arrangement.Center) {
             if (viewModel.inProgress.value) {
                 CircularProgressIndicator()
             }
         }
 
 
-        Spacer(modifier = Modifier.height(70.dp))
+        Spacer(modifier = Modifier.height(if (isKeyboardVisible) 0.dp else 60.dp))
 
         Column(
             Modifier
@@ -226,9 +253,7 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
             Spacer(modifier = Modifier.height(10.dp))
             /* https://stackoverflow.com/questions/64363502/how-to-remove-indicator-line-of-textfield-in-androidx-compose-material */
 
-            var isUserFocus by remember {
-                mutableStateOf(false)
-            }
+
             Card(
                 shape = RoundedCornerShape(40.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
@@ -246,18 +271,19 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                         unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                         focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                     ),
+
                     modifier = Modifier.onFocusChanged {
                         // Se asigna el valor de isFocused(true or false) a la variable isFocus
                         isUserFocus = it.isFocused
+
                     }
                 )
             }
 
-            Spacer(modifier =Modifier.padding(20.dp))
+            Spacer(modifier = Modifier.height(if (isKeyboardVisible) 10.dp else 30.dp))
 
-            var isPasswordFocus by remember {
-                mutableStateOf(false)
-            }
+
+
             Card(
                 shape = RoundedCornerShape(40.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
@@ -278,11 +304,15 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                     modifier = Modifier.onFocusChanged {
                         // Se asigna el valor de isFocused(true or false) a la variable isFocus
                         isPasswordFocus = it.isFocused
+
                     }
                 )
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
+
+
+            Spacer(modifier = Modifier.height(if (isKeyboardVisible) 10.dp else 40.dp))
+
 
             var userCanRegister by remember { mutableStateOf(false) }
             ElevatedButton(
@@ -292,9 +322,11 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                 ),
                 onClick = {
                     coroutineScope.launch {
-                        guardarPreferencias(dataStore, username, password)
-                        mostrarPreferencias(dataStore)
-
+                        if(userCanRegister){
+                            guardarPreferencias(dataStore, username, password)
+                            mostrarPreferencias(dataStore)
+                            mcontext.startActivity(Intent(mcontext, FirstActivity::class.java))
+                        }
                         // Para el acceso mediante Firebase
                         viewModel.signInWithEmailAndPassword(email = username, password = password){
                             userCanRegister = true
@@ -306,9 +338,6 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                 Text(text = "Iniciar sesión")
             }
 
-            if(userCanRegister){
-                mcontext.startActivity(Intent(mcontext, FirstActivity::class.java))
-            }
 
         }
     }

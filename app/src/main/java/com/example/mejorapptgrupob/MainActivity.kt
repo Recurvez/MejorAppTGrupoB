@@ -65,7 +65,9 @@ object DataStoreManager {
             _dataStore = dataStore
         }
     }
+
 }
+
 
 class MainActivity : ComponentActivity() {
 
@@ -76,6 +78,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
         DataStoreManager.initializeDataStore(dataStore)
+
         setContent {
             MaterialTheme {
                 Surface(
@@ -102,15 +105,19 @@ class MainActivity : ComponentActivity() {
     }
     fun checkAndRedirect() {
         lifecycleScope.launch {
-            val preferences = dataStore.data.first()
-            val mContext = this@MainActivity
-
-            if (preferences.isDataStoreEmpty()) {
-                val intent = Intent(mContext, LoginActivity::class.java)
-                mContext.startActivity(intent)
-            } else {
-                val intent = Intent(mContext, LoginActivity::class.java)
-                mContext.startActivity(intent)
+            try {
+                val preferences = dataStore.data.first()
+                val intent = if (preferences.isDataStoreEmpty()) {
+                    Intent(this@MainActivity, LoginActivity::class.java)
+                } else {
+                    Intent(this@MainActivity, FirstActivity::class.java)
+                }
+                startActivity(intent)
+                finish()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                finish()
             }
         }
     }
