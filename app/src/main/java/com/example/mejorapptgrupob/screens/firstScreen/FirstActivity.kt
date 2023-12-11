@@ -74,6 +74,7 @@ import com.example.mejorapptgrupob.screens.firstScreen.ui.theme.Purple40
 import com.example.mejorapptgrupob.screens.infoScreen.InfoActivity
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
 import com.example.mejorapptgrupob.screens.testScreen.TestActivity
+
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.Pink40
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.Pink80
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.Purple80
@@ -100,6 +101,8 @@ class FirstActivity : ComponentActivity() {
 
 @Composable
 internal fun FirstLayout(){
+    var model: LogoutViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+
     val mContext = LocalContext.current
     // Fondo que ocupa toda la pantalla
     Image(
@@ -256,6 +259,7 @@ internal fun FirstLayout(){
                         }
                            },
                     onClick = {
+                        model.logout()
                         mContext.startActivity(Intent(mContext, MainActivity::class.java))
                         (mContext as? Activity)?.finish()
                     }

@@ -1,5 +1,6 @@
 package com.example.mejorapptgrupob.screens.testScreen
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -38,6 +39,15 @@ import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.internalDB.DBUtilities
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.MejorAppTGrupoBTheme
 
+
+object SliderUtility2 {
+    fun resetSliderValues(context: Context) {
+        saveSliderValue(context, "sliderPosition5", 0f)
+        saveSliderValue(context, "sliderPosition6", 0f)
+        saveSliderValue(context, "sliderPosition7", 0f)
+        saveSliderValue(context, "sliderPosition8", 0f)
+    }
+}
 class TestActivity2 : ComponentActivity() {
     private lateinit var preguntas: List<String>
 
@@ -46,6 +56,8 @@ class TestActivity2 : ComponentActivity() {
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
         val inputStream = resources.openRawResource(R.raw.preguntas)
         preguntas = QuestionList.readCSV(inputStream, this)
+
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme
@@ -54,7 +66,7 @@ class TestActivity2 : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Screen2(preguntas)
+                    Screen2(this@TestActivity2, preguntas)
                 }
             }
         }
@@ -62,7 +74,8 @@ class TestActivity2 : ComponentActivity() {
 }
 
 @Composable
-internal fun Screen2(preguntas: List<String>) {
+internal fun Screen2(mContext: Context, preguntas: List<String>) {
+
 
     val mContext = LocalContext.current
     val openDialog = remember { mutableStateOf(false) }
@@ -75,10 +88,11 @@ internal fun Screen2(preguntas: List<String>) {
         "Siempre"
     )
 
-    var sliderPosition5 by remember { mutableStateOf(0f) }
-    var sliderPosition6 by remember { mutableStateOf(0f) }
-    var sliderPosition7 by remember { mutableStateOf(0f) }
-    var sliderPosition8 by remember { mutableStateOf(0f) }
+    var sliderPosition5 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition5")) }
+    var sliderPosition6 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition6")) }
+    var sliderPosition7 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition7")) }
+    var sliderPosition8 by remember { mutableStateOf(loadSliderValue(mContext, "sliderPosition8")) }
+
 
     Image(
         painter = painterResource(id = R.drawable.testscreen2_bg),
@@ -120,7 +134,8 @@ internal fun Screen2(preguntas: List<String>) {
             item {
                 SliderWithValueText(
                     sliderPosition = sliderPosition5.toInt(),
-                    onValueChange = { sliderPosition5 = it },
+                    onValueChange = { sliderPosition5 = it
+                        saveSliderValue(mContext, "sliderPosition5", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(4) ?: ""
                 )
@@ -129,7 +144,8 @@ internal fun Screen2(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition6.toInt(),
-                    onValueChange = { sliderPosition6 = it },
+                    onValueChange = { sliderPosition6 = it
+                        saveSliderValue(mContext, "sliderPosition6", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(5) ?: ""
                 )
@@ -138,7 +154,8 @@ internal fun Screen2(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition7.toInt(),
-                    onValueChange = { sliderPosition7 = it },
+                    onValueChange = { sliderPosition7 = it
+                        saveSliderValue(mContext, "sliderPosition7", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(6) ?: ""
                 )
@@ -147,7 +164,8 @@ internal fun Screen2(preguntas: List<String>) {
 
                 SliderWithValueText(
                     sliderPosition = sliderPosition8.toInt(),
-                    onValueChange = { sliderPosition8 = it },
+                    onValueChange = { sliderPosition8 = it
+                        saveSliderValue(mContext, "sliderPosition8", it)},
                     textValues = textValues,
                     labelText = preguntas.getOrNull(7) ?: ""
                 )
@@ -168,6 +186,10 @@ internal fun Screen2(preguntas: List<String>) {
                         if (sliderPosition5 != 0f && sliderPosition6 != 0f &&
                             sliderPosition7 != 0f && sliderPosition8 != 0f
                         ) {
+                            GlobalLists.respuestasEvitacion[0] = mapearValor(sliderPosition5)
+                            GlobalLists.respuestasFisiologica[2] = mapearValor(sliderPosition6)
+                            GlobalLists.respuestasCognitiva[2] = mapearValor(sliderPosition7)
+                            GlobalLists.respuestasFisiologica[3] = mapearValor(sliderPosition8)
                             // Todos los sliders tienen respuestas válidas, navegar a la siguiente pantalla
                             mContext.startActivity(Intent(mContext, TestActivity3::class.java))
                         } else {

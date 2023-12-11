@@ -21,6 +21,13 @@
             android:theme="@style/Theme.MejorAppTGrupoB" />
 
         <activity
+            android:name=".screens.testScreen.FinalActivity"
+            android:exported="false"
+            android:label="@string/title_activity_final"
+            android:theme="@style/Theme.MejorAppTGrupoB" />
+
+
+        <activity
             android:name=".screens.testScreen.TestActivity5"
             android:exported="false"
             android:label="@string/title_activity_test5"
@@ -50,8 +57,7 @@
             android:name=".screens.loginScreen.LoginActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
-            android:theme="@style/Theme.MejorAppTGrupoB"
-            android:windowSoftInputMode="adjustResize" />
+            android:theme="@style/Theme.MejorAppTGrupoB" />
         <activity
             android:name=".screens.firstScreen.FirstActivity"
             android:exported="false"
