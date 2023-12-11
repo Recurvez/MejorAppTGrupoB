@@ -1,74 +1,75 @@
 package com.example.mejorapptgrupob.screens.loginScreen
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Mail
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.mejorapptgrupob.DataStoreManager
 import com.example.mejorapptgrupob.MainActivity
 import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
+import com.example.mejorapptgrupob.screens.loginScreen.rememberImeState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -77,6 +78,9 @@ class LoginActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme
@@ -85,8 +89,7 @@ class LoginActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val dataStore = DataStoreManager.dataStore
-                    LoginLayout(dataStore = dataStore)
+                    LoginLayout(dataStore = DataStoreManager.dataStore)
                 }
             }
         }
@@ -114,14 +117,31 @@ suspend fun mostrarPreferencias(dataStore: DataStore<Preferences>) {
 }
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun LoginLayout(dataStore: DataStore<Preferences>){
+    val dataStore = DataStoreManager.dataStore
 
     var mcontext = LocalContext.current
 
     // viewModel donde trataremos el login del usuario
     val viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 
+    // https://www.youtube.com/watch?v=kgoJfl_Oc5E
+    val imeState by rememberImeState()
+    val scrollState = rememberScrollState()
+
+
+    LaunchedEffect(key1 = imeState){
+        if(imeState){
+            scrollState.scrollTo(scrollState.value)
+        }
+    }
+    var isKeyboardVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(imeState) {
+        isKeyboardVisible = imeState
+    }
 
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -131,6 +151,8 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
         username = preferences[USER_KEY] ?: ""
         password = preferences[PASSWORD_KEY] ?: ""
     }
+
+
     val coroutineScope = rememberCoroutineScope()
 
     val mContext = LocalContext.current
@@ -147,10 +169,20 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
     // Poner también que cuando le des a la flecha pase del usuario
     // a la contraseña
 
+    var isPasswordFocus by remember {
+        mutableStateOf(false)
+    }
+
+    var isUserFocus by remember {
+        mutableStateOf(false)
+    }
+
+
     Column {
         Column(
             Modifier
                 .padding(start = 10.dp, top = 5.dp)
+                .verticalScroll(scrollState)
 
         ) {
             Row(
@@ -177,7 +209,8 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
             }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(if (isKeyboardVisible) 0.dp else 60.dp))
+
 
         // Icon
         Row(
@@ -194,29 +227,21 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
             )
         }
 
-        Spacer(modifier = Modifier.height(60.dp))
+
+        Spacer(modifier = Modifier.height(if (isKeyboardVisible) 0.dp else 60.dp))
+
 
         Row(
             Modifier
                 .fillMaxWidth()
-                .height(40.dp), horizontalArrangement = Arrangement.Center) {
+                .height(20.dp), horizontalArrangement = Arrangement.Center) {
             if (viewModel.inProgress.value) {
                 CircularProgressIndicator()
             }
         }
 
 
-        Spacer(modifier = Modifier.height(70.dp))
-        var isEmailBlankClick by remember{ mutableStateOf(false) }
-
-        Row(
-            Modifier
-                .height(20.dp)
-                .padding(start = 75.dp)) {
-            if (isEmailBlankClick){
-                Text(text = "Indique un correo", color = Color.Red)
-            }
-        }
+        Spacer(modifier = Modifier.height(if (isKeyboardVisible) 0.dp else 60.dp))
 
         Column(
             Modifier
@@ -228,112 +253,68 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
             Spacer(modifier = Modifier.height(10.dp))
             /* https://stackoverflow.com/questions/64363502/how-to-remove-indicator-line-of-textfield-in-androidx-compose-material */
 
-            var isUserFocus by remember {
-                mutableStateOf(false)
-            }
 
             Card(
                 shape = RoundedCornerShape(40.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                border = if (isUserFocus) BorderStroke(2.dp, Color.Blue) else if(isEmailBlankClick) {BorderStroke(2.dp, Color.Red)} else { BorderStroke(0.dp, Color.Transparent) }
+                border = if (isUserFocus) BorderStroke(2.dp, Color.Blue) else { BorderStroke(0.dp, Color.Transparent) }
             ) {
                 TextField(
                     value = username,
                     onValueChange = { username = it  },
                     shape = RoundedCornerShape(40.dp),
-                    placeholder = {Text(text ="Correo")},
-                    leadingIcon = { Icon(imageVector = Icons.Filled.Mail, contentDescription = "") },
+                    placeholder = {Text(text ="Usuario")},
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "") },
                     colors = TextFieldDefaults.colors(
                         unfocusedIndicatorColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                         focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
                     ),
+
                     modifier = Modifier.onFocusChanged {
                         // Se asigna el valor de isFocused(true or false) a la variable isFocus
                         isUserFocus = it.isFocused
+
                     }
                 )
             }
 
-            Spacer(modifier = Modifier.padding(20.dp))
-
-            var isPasswordFocus by remember {
-                mutableStateOf(false)
-            }
-
-            var password by remember { mutableStateOf("") }
-
-            var passwordState by remember { mutableIntStateOf(-2) }
+            Spacer(modifier = Modifier.height(if (isKeyboardVisible) 10.dp else 30.dp))
 
 
-            var isPasswordBlankClick by remember { mutableStateOf(false) }
-
-            if(isPasswordFocus) {
-                passwordState = 1
-            } else if(!isPasswordFocus && !isPasswordBlankClick){
-                passwordState = 0
-            }
-
-            var borderColor: BorderStroke =
-                if(isPasswordBlankClick) BorderStroke(2.dp, Color.Red)
-                else if(passwordState == 1) BorderStroke(2.dp, Color.Blue)
-                else BorderStroke(0.dp, Color.Transparent)
 
             Card(
                 shape = RoundedCornerShape(40.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                border = borderColor
-            )
-            {
-                var isPasswordVisible by remember { mutableStateOf(false) }
+                border = if (isPasswordFocus) BorderStroke(2.dp, Color.Blue) else { BorderStroke(0.dp, Color.Transparent) }
+            ) {
                 TextField(
                     value = password,
                     onValueChange = { password = it },
                     shape = RoundedCornerShape(40.dp),
-                    placeholder = { Text(text = "Contraseña") },
-                    singleLine = true,
-                    visualTransformation = if(isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Filled.Lock,
-                            contentDescription = ""
-                        )
-                    },
-                    trailingIcon = {
-                        val image = if (isPasswordVisible){
-                            Icons.Filled.Visibility
-                        } else {
-                            Icons.Filled.VisibilityOff
-                        }
-                        val description = if (isPasswordVisible) "Hide password" else "Show password"
-
-                        IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
-                            Icon(imageVector = image, contentDescription = description)
-                        }
-                    },
+                    placeholder = {Text(text ="Contraseña")},
+                    leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "") },
                     colors = TextFieldDefaults.colors(
                         unfocusedIndicatorColor = Color.Transparent,
                         focusedIndicatorColor = Color.Transparent,
                         unfocusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
-                        focusedContainerColor = Color.White, // TODO --> CAMBIAR  COLORES
+                        focusedContainerColor = Color.White // TODO --> CAMBIAR  COLORES
                     ),
-                    modifier = Modifier
-                        .width(280.dp)
-                        .onFocusChanged {
-                            // Se asigna el valor de isFocused(true or false) a la variable isFocus
-                            isPasswordFocus = it.isFocused
-                        }
+                    modifier = Modifier.onFocusChanged {
+                        // Se asigna el valor de isFocused(true or false) a la variable isFocus
+                        isPasswordFocus = it.isFocused
+
+                    }
                 )
             }
 
 
-            Spacer(modifier = Modifier.height(50.dp))
+
+            Spacer(modifier = Modifier.height(if (isKeyboardVisible) 10.dp else 40.dp))
 
 
-            var userCanLogin by remember { mutableStateOf(false) }
-            var openDialogInvalidCredentials by remember { mutableStateOf(false) }
+            var userCanRegister by remember { mutableStateOf(false) }
             ElevatedButton(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.White, // TODO --> CAMBIAR  COLORES
@@ -341,38 +322,22 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                 ),
                 onClick = {
                     coroutineScope.launch {
-                        guardarPreferencias(dataStore, username, password)
-                        mostrarPreferencias(dataStore)
-
-                        // Comprobación de que los campos no esten vacíos para que no salte excepción
-                        isEmailBlankClick = username.isBlank()
-                        isPasswordBlankClick = password.isBlank()
-                        if( !(isEmailBlankClick || isPasswordBlankClick) ){
-                            // Para el acceso mediante Firebase
-                            viewModel.signInWithEmailAndPassword(email = username, password = password,
-                                sucessActions = {
-                                    userCanLogin = true
-                            },
-                                failedActions = {
-                                    openDialogInvalidCredentials = true
-                                })
-
-
+                        if(userCanRegister){
+                            guardarPreferencias(dataStore, username, password)
+                            mostrarPreferencias(dataStore)
+                            mcontext.startActivity(Intent(mcontext, FirstActivity::class.java))
                         }
+                        // Para el acceso mediante Firebase
+                        viewModel.signInWithEmailAndPassword(email = username, password = password){
+                            userCanRegister = true
+                        }
+
                     }
                 },
             ) {
                 Text(text = "Iniciar sesión")
             }
 
-            if(userCanLogin){
-                mcontext.startActivity(Intent(mcontext, FirstActivity::class.java))
-            }
-
-            if(openDialogInvalidCredentials){
-                var status = InvalidCredentialCard()
-                openDialogInvalidCredentials = status
-            }
 
         }
     }

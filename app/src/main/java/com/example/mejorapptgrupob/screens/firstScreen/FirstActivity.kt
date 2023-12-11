@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.datastore.preferences.core.edit
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -66,6 +67,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.edit
+import androidx.lifecycle.lifecycleScope
+import com.example.mejorapptgrupob.DataStoreManager
+import com.example.mejorapptgrupob.DataStoreManager.dataStore
 import com.example.mejorapptgrupob.MainActivity
 import com.example.mejorapptgrupob.MainLayout
 import com.example.mejorapptgrupob.R
@@ -74,16 +80,18 @@ import com.example.mejorapptgrupob.screens.firstScreen.ui.theme.Purple40
 import com.example.mejorapptgrupob.screens.infoScreen.InfoActivity
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
 import com.example.mejorapptgrupob.screens.testScreen.TestActivity
-
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.Pink40
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.Pink80
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.Purple80
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.PurpleGrey80
 import com.example.mejorapptgrupob.screens.userGuideScreen.UserGuideActivity
+import kotlinx.coroutines.launch
+import java.util.prefs.Preferences
 
 class FirstActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme
@@ -97,12 +105,23 @@ class FirstActivity : ComponentActivity() {
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        val dataStore = DataStoreManager.dataStore
+    }
+    fun clearPreferences() {
+        lifecycleScope.launch {
+            dataStore?.edit { preferences ->
+                preferences.clear()
+            }
+        }
+    }
 }
+
 
 @Composable
 internal fun FirstLayout(){
-    var model: LogoutViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-
     val mContext = LocalContext.current
     // Fondo que ocupa toda la pantalla
     Image(
@@ -259,7 +278,7 @@ internal fun FirstLayout(){
                         }
                            },
                     onClick = {
-                        model.logout()
+                        (mContext as? FirstActivity)?.clearPreferences()
                         mContext.startActivity(Intent(mContext, MainActivity::class.java))
                         (mContext as? Activity)?.finish()
                     }
