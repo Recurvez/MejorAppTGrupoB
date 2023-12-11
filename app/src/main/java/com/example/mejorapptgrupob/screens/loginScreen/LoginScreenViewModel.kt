@@ -1,6 +1,5 @@
 package com.example.mejorapptgrupob.screens.loginScreen
 
-import android.content.ContentValues
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.MutableLiveData
@@ -8,17 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-import kotlin.Exception
 
 // ViewModel para la retención de los datos en las diferentes etapas de la app
 // https://www.youtube.com/watch?v=NFot9_bSFhw&t=433s
 
 class LoginScreenViewModel: ViewModel() {
     private val auth: FirebaseAuth = Firebase.auth
+    var currentUser = mutableStateOf<FirebaseUser?>(null)
 
     // El guión bajo se pone por convención para indicar que es una variable privada
     // MutableLiveData para que trabaje bien con los ciclos de vida de la app, garantiza que las actualizaciones de datos solo se envien cuando el componente está en un estado activo
@@ -27,7 +26,7 @@ class LoginScreenViewModel: ViewModel() {
 
     var inProgress = mutableStateOf(false)
 
-    internal fun signInWithEmailAndPassword(email: String, password: String, actions: () -> Unit) =
+    internal fun signInWithEmailAndPassword(email: String, password: String, sucessActions: () -> Unit , failedActions: () -> Unit ) =
         // Escribiremos el contenido de la función en un viewModelScope para que se ejecute en segundo plano
         viewModelScope.launch {
 
@@ -43,8 +42,9 @@ class LoginScreenViewModel: ViewModel() {
                 if(task.isSuccessful){
                     // Si su estado es correcto
                     Log.d("Login", "Logueado con éxito:)")
-                    actions()
+                    sucessActions()
                 } else {
+                    failedActions()
                     task.exception
                     when(val exception = task.exception) {
                         is FirebaseException -> {
@@ -63,5 +63,8 @@ class LoginScreenViewModel: ViewModel() {
             }
 
         }
-
+    internal fun fetchCurrentUser() {
+        val user = auth.currentUser
+        currentUser.value = user
+    }
 }

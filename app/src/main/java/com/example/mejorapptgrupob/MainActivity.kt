@@ -44,13 +44,16 @@ import androidx.compose.ui.unit.sp
 import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.lifecycleScope
 import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
+import com.example.mejorapptgrupob.screens.firstScreen.FirstLayout
 
 import com.example.mejorapptgrupob.screens.loginScreen.LoginActivity
 import com.example.mejorapptgrupob.screens.loginScreen.LoginLayout
 
 
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
+import com.example.mejorapptgrupob.screens.testScreen.FinalScreen
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -85,12 +88,17 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainLayout()
+                    // Lo de si esta logueado que entre directamente, lo de las prefes de adri aún no va
+                    if(FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()){
+                        MainLayout()
+                    } else {
+                        FirstLayout()
+                    }
                 }
             }
         }
     }
-
+/*
 
     private fun Preferences.isDataStoreEmpty(): Boolean {
         return this.asMap().isEmpty()
@@ -121,7 +129,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
+*/
 }
 
 @Composable
@@ -187,8 +195,10 @@ internal fun MainLayout() {
                 onClick = {
                     val mainActivity = (mContext as MainActivity)
                     mainActivity.lifecycleScope.launch {
-                        mainActivity.checkAndRedirect()
+                        // mainActivity.checkAndRedirect()
                     }
+                    val intent = Intent(mContext, LoginActivity::class.java)
+                    mContext.startActivity(intent)
                 },
                 modifier = Modifier.width(140.dp)
             ) {
