@@ -19,6 +19,8 @@
             android:exported="false"
             android:label="@string/title_activity_final"
             android:theme="@style/Theme.MejorAppTGrupoB" />
+        <activity android:name=".screens.adviceScreen.AdviceActivity"/>
+
         <activity
             android:name=".screens.testScreen.TestActivity5"
             android:exported="false"

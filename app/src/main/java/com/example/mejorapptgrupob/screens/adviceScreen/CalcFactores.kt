@@ -1,60 +1,48 @@
 package com.example.mejorapptgrupob.screens.adviceScreen
 
 import androidx.compose.runtime.Composable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import java.io.BufferedReader
-import java.io.File
-import java.io.FileReader
+
 
 
 class CalcFactores {
-    @Composable
-    fun InterpretarTest(respuestas: List<Int>) {
+    fun interpretarTest(respuestas: List<Int>): Triple<Int, Int, Int> {
         // Calcula los niveles de respuesta
         val nivelCognitivo = calcularNivelCognitivo(respuestas)
         val nivelFisico = calcularNivelFisico(respuestas)
         val nivelEvitacion = calcularNivelEvitacion(respuestas)
 
-
+        return Triple(nivelCognitivo, nivelFisico, nivelEvitacion)
     }
 
-    @Composable
-// Funciones para calcular los niveles de respuesta
+    // Funciones para calcular los niveles de respuesta
     fun calcularNivelCognitivo(respuestasFisiologica: List<Int>): Int {
         val puntuacion = respuestasFisiologica.sum()
-        val nivel = when (puntuacion) {
-            in 0..14 -> "bajo"
-            in 15..21 -> "medio"
-            else -> "alto"
+        return when (puntuacion) {
+            in 0..14 -> 1 // O el valor que represente "bajo"
+            in 15..21 -> 2 // O el valor que represente "medio"
+            else -> 3 // O el valor que represente "alto"
         }
-        return puntuacion
     }
 
-    @Composable
     fun calcularNivelFisico(respuestasFisico: List<Int>): Int {
         val puntuacion = respuestasFisico.sum()
-        val nivel = when (puntuacion) {
-            in 0..14 -> "bajo"
-            in 15..23 -> "medio"
-            else -> "alto"
+        return when (puntuacion) {
+            in 0..14 -> 1 // O el valor que represente "bajo"
+            in 15..23 -> 2 // O el valor que represente "medio"
+            else -> 3 // O el valor que represente "alto"
         }
-        return puntuacion
     }
 
-    @Composable
     fun calcularNivelEvitacion(respuestasEvitacion: List<Int>): Int {
         val puntuacion = respuestasEvitacion.sum()
-        val nivel = when (puntuacion) {
-            in 0..1 -> "bajo"
-            in 2..3 -> "medio"
-            else -> "alto"
+        return when (puntuacion) {
+            in 0..1 -> 1 // O el valor que represente "bajo"
+            in 2..3 -> 2 // O el valor que represente "medio"
+            else -> 3 // O el valor que represente "alto"
         }
-        return puntuacion
     }
 
-    @Composable
-// Función para calcular la puntuación combinada
+    // Función para calcular la puntuación combinada
     fun calcularPuntuacionCombinada(
         respuestasCognitivo: List<Int>,
         respuestasFisico: List<Int>,
