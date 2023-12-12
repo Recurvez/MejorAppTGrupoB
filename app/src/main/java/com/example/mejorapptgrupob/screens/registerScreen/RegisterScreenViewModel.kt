@@ -1,7 +1,10 @@
 package com.example.mejorapptgrupob.screens.registerScreen
 
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mejorapptgrupob.screens.registerScreen.model.User
@@ -39,6 +42,7 @@ class RegisterScreenViewModel: ViewModel() {
     internal fun createUser(username: String, age: Int){
         val userId = auth.currentUser?.uid
         // val user = mutableMapOf<String, Any>()
+        var using by mutableStateOf(false)
 
         val user = User(
             userId = userId.toString(),

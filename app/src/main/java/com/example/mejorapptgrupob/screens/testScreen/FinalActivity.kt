@@ -46,11 +46,7 @@ class FinalActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        SliderUtility.resetSliderValues(this)
-        SliderUtility2.resetSliderValues(this)
-        SliderUtility3.resetSliderValues(this)
-        SliderUtility4.resetSliderValues(this)
-        SliderUtility5.resetSliderValues(this)
+
 
         setContent {
             MejorAppTGrupoBTheme {

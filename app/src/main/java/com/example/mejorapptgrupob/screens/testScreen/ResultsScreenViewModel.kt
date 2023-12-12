@@ -45,7 +45,4 @@ class ResultsViewModel : ViewModel() {
         }
     }
 
-    fun saveUsername(username: String) {
-        savedUsername = username
-    }
 }
