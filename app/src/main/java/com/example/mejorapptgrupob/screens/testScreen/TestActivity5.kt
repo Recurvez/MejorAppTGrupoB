@@ -45,7 +45,7 @@
             saveSliderValue(context, "sliderPosition20", 0f)
         }
     }
-    val username = currentUser.value
+    val username = currentUser
     class TestActivity5 : ComponentActivity() {
         private lateinit var preguntas: List<String>
 

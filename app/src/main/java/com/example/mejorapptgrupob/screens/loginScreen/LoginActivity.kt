@@ -80,7 +80,7 @@ import com.example.mejorapptgrupob.screens.registerScreen.rememberImeState
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-var currentUser = mutableStateOf("")
+var currentUser = ""
 class LoginActivity : ComponentActivity() {
     var currentUser = mutableStateOf("")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -394,7 +394,7 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                             viewModel.signInWithEmailAndPassword(email = username, password = password,
                                 sucessActions = {
                                     userCanLogin = true
-                                    currentUser.value = savedUsername
+                                    currentUser = savedUsername
                             },
                                 failedActions = {
                                     openDialogInvalidCredentials = true
