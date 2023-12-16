@@ -1,5 +1,6 @@
 package com.example.mejorapptgrupob.screens.infoScreen
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -42,6 +43,10 @@ import com.example.mejorapptgrupob.screens.infoScreen.ui.theme.MejorAppTGrupoBTh
 class InfoActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme

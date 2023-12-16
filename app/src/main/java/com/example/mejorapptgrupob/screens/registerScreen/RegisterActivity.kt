@@ -1,6 +1,7 @@
 package com.example.mejorapptgrupob.screens.registerScreen
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -73,6 +74,9 @@ import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
             MaterialTheme(
@@ -467,7 +471,7 @@ internal fun RegisterLayout() {
                     }
                     if(passwordState == -1){
                         Text(
-                            text = "* Formato inválido",
+                            text = "* Requisitos mínimos obligatorios",
                             color = Color.Red,
                             fontSize = 12.sp,
                             modifier = Modifier

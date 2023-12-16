@@ -1,6 +1,7 @@
 package com.example.mejorapptgrupob
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -54,6 +55,7 @@ import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
 import com.example.mejorapptgrupob.screens.testScreen.FinalScreen
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -77,8 +79,11 @@ class MainActivity : ComponentActivity() {
     val dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
+
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
         DataStoreManager.initializeDataStore(dataStore)
 
@@ -198,7 +203,9 @@ internal fun MainLayout() {
                         // mainActivity.checkAndRedirect()
                     }
                     val intent = Intent(mContext, LoginActivity::class.java)
+
                     mContext.startActivity(intent)
+
                 },
                 modifier = Modifier.width(140.dp)
             ) {

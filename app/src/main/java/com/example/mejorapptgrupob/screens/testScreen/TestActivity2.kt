@@ -2,6 +2,7 @@ package com.example.mejorapptgrupob.screens.testScreen
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -53,6 +54,10 @@ class TestActivity2 : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
         val inputStream = resources.openRawResource(R.raw.preguntas)
         preguntas = QuestionList.readCSV(inputStream, this)
