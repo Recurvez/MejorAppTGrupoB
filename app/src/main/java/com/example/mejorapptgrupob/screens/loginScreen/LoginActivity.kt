@@ -2,6 +2,7 @@ package com.example.mejorapptgrupob.screens.loginScreen
 
 import ResultsViewModel
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -82,9 +83,11 @@ import kotlinx.coroutines.launch
 
 var currentUser = ""
 class LoginActivity : ComponentActivity() {
-    var currentUser = mutableStateOf("")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         setContent {
             MaterialTheme(
@@ -301,9 +304,8 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
             }
 
 
-            Spacer(modifier = Modifier.height(if (isKeyboardVisible) 10.dp else 30.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
-            var password by remember { mutableStateOf("") }
 
             var passwordState by remember { mutableIntStateOf(-2) }
 
@@ -371,7 +373,7 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
 
             val savedUsername = username;
 
-            Spacer(modifier = Modifier.height(if (isKeyboardVisible) 10.dp else 40.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
 
 
@@ -408,7 +410,12 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
 
 
             if(userCanLogin){
-                mcontext.startActivity(Intent(mcontext, FirstActivity::class.java))
+                var intent =  Intent(mcontext, FirstActivity::class.java)
+
+                // Borra las actividades anteriores y deja la first como la primera del stack
+                // https://stackoverflow.com/questions/12947916/android-remove-all-the-previous-activities-from-the-back-stack
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                mcontext.startActivity(intent)
             }
 
 

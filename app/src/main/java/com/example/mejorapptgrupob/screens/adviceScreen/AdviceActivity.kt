@@ -1,6 +1,7 @@
 package com.example.mejorapptgrupob.screens.adviceScreen
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -49,6 +50,9 @@ class AdviceActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
         SliderUtility.resetSliderValues(this)
         SliderUtility2.resetSliderValues(this)

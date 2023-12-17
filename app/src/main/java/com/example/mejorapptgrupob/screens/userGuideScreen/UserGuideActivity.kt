@@ -1,5 +1,6 @@
 package com.example.mejorapptgrupob.screens.userGuideScreen
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -45,11 +46,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.R
-import com.example.mejorapptgrupob.screens.userGuideScreen.ui.theme.MejorAppTGrupoBTheme
 
 class UserGuideActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme

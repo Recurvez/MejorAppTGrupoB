@@ -2,6 +2,7 @@ package com.example.mejorapptgrupob.screens.firstScreen
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -94,6 +95,11 @@ class FirstActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Bloqueo de orientación
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+
+
         setContent {
             MaterialTheme(
                 colorScheme = MaterialTheme.colorScheme
@@ -124,6 +130,9 @@ class FirstActivity : ComponentActivity() {
 
 @Composable
 internal fun FirstLayout(){
+
+
+
     var model: LogoutViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 
     val mContext = LocalContext.current

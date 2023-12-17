@@ -8,16 +8,31 @@ sealed class ItemsContent(
     object Item1: ItemsContent(
         null,
         "Info. sobre el test",
-        "Información sobre el test. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam condimentum consequat felis. Nulla sit amet nisl et leo tristique volutpat. Praesent at lorem elit. Ut urna risus, sagittis sit amet velit consectetur, iaculis congue ante. Pellentesque interdum, nibh sit amet blandit luctus, est lacus convallis lorem, non sollicitudin ex nisi tincidunt arcu. Donec ultrices elit eget turpis mollis luctus sit amet sit amet metus. Vivamus fringilla quam et venenatis semper. Aenean eu eleifend erat, ut elementum metus. "
+        "Pendiente para la mención de créditos sobre los creadores de las preguntas"
     )
     object Item2: ItemsContent(
         null,
         "Info. de interés",
-        "Información de interés. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam condimentum consequat felis. Nulla sit amet nisl et leo tristique volutpat. Praesent at lorem elit. Ut urna risus, sagittis sit amet velit consectetur, iaculis congue ante. Pellentesque interdum, nibh sit amet blandit luctus, est lacus convallis lorem, non sollicitudin ex nisi tincidunt arcu. Donec ultrices elit eget turpis mollis luctus sit amet sit amet metus. Vivamus fringilla quam et venenatis semper. Aenean eu eleifend erat, ut elementum metus. "
+        "En información de interés podrás encontrar estas formas de contacto: " +
+                " \n\n- El departamento de orientación del IES Gregorio Prieto donde podrás hablar con ellos" +
+                " y reuniros en persona." +
+                "\n\n- Dispondrás del teléfono del menor en el cuál siempre habrá una persona para ayudarte en cualquier momento." +
+                "\n\n- Por último dispondrás del teléfono contra el bullying donde te propondrán soluciones" +
+                " sobre tu situación actual, no tienes porque seguir sufriendo, no es la vida que te mereces"
     )
     object Item3: ItemsContent(
         null,
         "Sobre nosotros",
-        "Información sobre los desarrolladores. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam condimentum consequat felis. Nulla sit amet nisl et leo tristique volutpat. Praesent at lorem elit. Ut urna risus, sagittis sit amet velit consectetur, iaculis congue ante. Pellentesque interdum, nibh sit amet blandit luctus, est lacus convallis lorem, non sollicitudin ex nisi tincidunt arcu. Donec ultrices elit eget turpis mollis luctus sit amet sit amet metus. Vivamus fringilla quam et venenatis semper. Aenean eu eleifend erat, ut elementum metus. "
+        "Somos un grupo de alumnos de 2º Desarrollo de Aplicaciones Multiplataforma que nos hemos lanzado " +
+                "en este gran proyecto con tecnologías totalmente desconocidas." +
+                "\n\n\t - Abdelhaq Boulboul" +
+                "\n\t - Adrían Santos-Olmo Díaz" +
+                "\n\t - María del Carmen Díaz" +
+                "\n\t - Andrés Pisa" +
+                "\n\t - Sergio Guijarro" +
+                "\n\nPor último, pero no menos importante, queríamos darle un especial agradecimiento " +
+                "a nuestros profesores José Abaldea García y a David Muñoz por monitorizarnos y enseñarnos cómo " +
+                "se trabaja en un entorno empresarial. También, agradecemos a aquellos profesores del centro " +
+                "que han aportado su granito de arena para que esta aplicación pudiera salir hacia delante."
     )
 }
