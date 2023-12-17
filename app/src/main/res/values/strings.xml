@@ -13,5 +13,6 @@
     <string name="title_activity_test5">TestActivity5</string>
     <string name="title_activity_final_test">FinalTest</string>
     <string name="title_activity_final">FinalActivity</string>
+    <string name="title_activity_results">ResultsActivity</string>
 
 </resources>

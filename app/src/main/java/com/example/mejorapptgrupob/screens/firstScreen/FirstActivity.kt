@@ -79,6 +79,7 @@ import com.example.mejorapptgrupob.screens.firstScreen.ui.theme.MejorAppTGrupoBT
 import com.example.mejorapptgrupob.screens.firstScreen.ui.theme.Purple40
 import com.example.mejorapptgrupob.screens.infoScreen.InfoActivity
 import com.example.mejorapptgrupob.screens.registerScreen.RegisterActivity
+import com.example.mejorapptgrupob.screens.resultsScreen.ResultsActivity
 import com.example.mejorapptgrupob.screens.testScreen.TestActivity
 
 import com.example.mejorapptgrupob.screens.testScreen.ui.theme.Pink40
@@ -214,7 +215,7 @@ internal fun FirstLayout(){
                             )
                         }
                     },
-                    onClick = { /* TO-DO */ }
+                    onClick = { mContext.startActivity(Intent(mContext, ResultsActivity::class.java)) }
                 )
 
                 DropdownMenuItem(
