@@ -1,5 +1,6 @@
 package com.example.mejorapptgrupob.screens.userGuideScreen
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -22,13 +23,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,12 +45,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.R
+import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
+import com.example.mejorapptgrupob.screens.testScreen.TestActivity
+import io.grpc.Context
 
 class UserGuideActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +80,8 @@ class UserGuideActivity : ComponentActivity() {
 
 @Composable
 internal fun UserGuideLayout() {
+    var mContext = LocalContext.current
+
     Image(
         painter = painterResource(id = R.drawable.userguidescreen),
         contentDescription = "background for user guide screen",
@@ -92,15 +103,28 @@ internal fun UserGuideLayout() {
                 ItemsContent.Item2,
                 ItemsContent.Item3
             )
-
-            LazyColumn(
-                contentPadding = PaddingValues(10.dp)
-            ){
-                items(itemsList){ item ->
-                    if(itemsList[0] == item){
-                        Title()
+            Scaffold(
+                floatingActionButton = {
+                    var intent = Intent(mContext, FirstActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    ExtendedFloatingActionButton(
+                        text = { Text(text = "Volver atrás") },
+                        icon = { Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "flecha para ir atrás")  },
+                        onClick = { mContext.startActivity(intent) },
+                        modifier = Modifier.padding(bottom = 40.dp))
+                },
+                containerColor = Color.Transparent
+            ) {padding ->
+                LazyColumn(
+                    contentPadding = PaddingValues(10.dp, 10.dp, 10.dp, 80.dp),
+                    modifier = Modifier.padding(padding)
+                ){
+                    items(itemsList){ item ->
+                        if(itemsList[0] == item){
+                            Title()
+                        }
+                        ListItemRow(item)
                     }
-                    ListItemRow(item)
                 }
             }
         }
@@ -122,7 +146,7 @@ private fun Title(){
         )
     }
 
-    Spacer(modifier = Modifier.height(30.dp))
+    Spacer(modifier = Modifier.height(120.dp))
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -196,5 +220,5 @@ private fun ListItemRow(item: ItemsContent){
             }
         }
     }
-    Spacer(modifier = Modifier.height(40.dp))
+    Spacer(modifier = Modifier.height(60.dp))
 }

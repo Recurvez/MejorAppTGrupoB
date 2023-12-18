@@ -197,7 +197,9 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
         ) {
             Row(
                 Modifier.clickable {
-                    mContext.startActivity(Intent(mContext, MainActivity::class.java))
+                    var intent =Intent(mContext, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    mContext.startActivity(intent)
                 }
             ) {
                 Image(
@@ -415,7 +417,15 @@ internal fun LoginLayout(dataStore: DataStore<Preferences>){
                 // Borra las actividades anteriores y deja la first como la primera del stack
                 // https://stackoverflow.com/questions/12947916/android-remove-all-the-previous-activities-from-the-back-stack
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                mcontext.startActivity(intent)
+
+                // Solución del problema de que salgan varias pantallas(parece ser que es porque es compostable y se llama varias veces)
+                // Entonces utilizamos un DisposableEffect que se ejecuta cuando ya no sea compostable
+                // https://stackoverflow.com/questions/76760860/what-is-disposableeffect-and-under-the-hood-in-jetpack-compose
+                DisposableEffect(mcontext){
+                    mcontext.startActivity(intent)
+                    onDispose {  }
+                }
+
             }
 
 

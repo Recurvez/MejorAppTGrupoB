@@ -45,6 +45,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -131,7 +132,9 @@ internal fun RegisterLayout() {
         ) {
             Row(
                 Modifier.clickable {
-                    context.startActivity(Intent(context, MainActivity::class.java))
+                    var intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    context.startActivity(intent)
                 }
             ) {
                 Image(
@@ -576,13 +579,18 @@ internal fun RegisterLayout() {
                                 if( !isEmailError && !isNameError && age.matches(regex = Regex("\\d+")) && passwordState == 0 && repeatPassword == password){
 
                                     // var result = FirebaseUtils.createUser(email, password)
-                                    viewModel.createUserWithEmailAndPassword(email, password){
+                                    viewModel.createUserWithEmailAndPassword(email, password, successActions = {
                                         userCanRegister = true
+                                    })
+                                    // Failed Actions
+                                    {
+                                        Toast.makeText(context, "Correo ya existente", Toast.LENGTH_SHORT).show();
+                                        userCanRegister = false
                                     }
 
                                 } else {
                                     // Checkear todos los campos que faltan y ponerlos en rojo
-                                    generateToast(context, "Campos incorrectos", Toast.LENGTH_SHORT)
+                                    generateToast(context, "Rellene todos los campos", Toast.LENGTH_SHORT)
 
                                 }
                             }
@@ -592,7 +600,16 @@ internal fun RegisterLayout() {
                         }
                         if(userCanRegister){
                             viewModel.createUser(name, age.toInt())
-                            context.startActivity(Intent(context, FirstActivity::class.java))
+                            var intent = Intent(context, FirstActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                            // Solución del problema de que salgan varias pantallas(parece ser que es porque es compostable y se llama varias veces)
+                            // Entonces utilizamos un DisposableEffect que se ejecuta cuando ya no sea compostable
+                            // https://stackoverflow.com/questions/76760860/what-is-disposableeffect-and-under-the-hood-in-jetpack-compose
+                            DisposableEffect(context){
+                                context.startActivity(intent)
+                                onDispose {  }
+                            }
                         }
                     }
                 }

@@ -3,11 +3,11 @@ package com.example.mejorapptgrupob.screens.registerScreen
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mejorapptgrupob.screens.registerScreen.model.User
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,17 +22,33 @@ class RegisterScreenViewModel: ViewModel() {
     internal fun createUserWithEmailAndPassword(
         email: String,
         password: String,
-        actions: () -> Unit
-    ){
-        if(_isLoading.value == false){
+        successActions: () -> Unit,
+        failedActions: () -> Unit
+    ) {
+        if (_isLoading.value == false) {
             _isLoading.value = true
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    if(task.isSuccessful){
-                        actions()
+                    if (task.isSuccessful) {
+                        successActions()
                     } else {
-                        Log.d("Registro", "createUserWithEmailAndPassword ${task.result}")
+                        failedActions()
+                        task.exception
+                        when (val exception = task.exception) {
+
+                            is FirebaseException -> {
+                                Log.d("Login", "Credenciales inválidas")
+                            }
+
+                            else -> {
+                                Log.d("Login", "Excepción no controlada")
+                                Log.d(
+                                    "Login",
+                                    "nombre de la excepción -> ${exception?.javaClass?.simpleName}"
+                                )
+                            }
+                        }
                     }
                     _isLoading.value = false
                 }
