@@ -8,10 +8,18 @@ sealed class ItemsContent(
     object Item1: ItemsContent(
         null,
         "Info. sobre el test",
-        "Preguntas formadas por diferentes profesores del IES Gregorio Prieto que recibieron" +
-                " una formación sobre la ansiedad, está formación proviene de la clínica lazos, " +
+        "El test consiste en una serie de 20 preguntas formadas por diferentes profesores del IES Gregorio Prieto que recibieron" +
+                " una formación sobre la ansiedad. Esta formación proviene de la clínica Lazos, " +
                 "específicamente por Cristina Castillo encargada de transmitir una base sólida, una rápida " +
-                "identificación y formas de actuación ante una situación de este tipo."
+                "identificación y formas de actuación ante una situación de este tipo.\n" +
+                "Este test evaluará 3 factores distintos en base a nuestras respuestas, y cada factor tendrá 3 niveles (bajo, medio y alto)." +
+                "\n\n\t- Factor cognitivo: " + "Respuesta cognitiva de ansiedad, indicando los pensamientos con sesgo" +
+        " negativo y preocupaciones sobre las situaciones previas, durante y posteriores de" +
+                " los exámenes." +
+                "\n\n\t- Factor fisiológico: Respuesta fisiológica a la ansiedad" +
+                "\n\n\t- Factor de evitación:  Comportamientos de evitación, mostrándose la respuesta motora ansiosa de huida ante las situaciones de los exámenes." +
+                "\n\nUna vez finalizado el test se mostrarán diversos consejos dependiendo de los niveles de riesgo en estos factores.\n"+
+                "\nEs posible consultar tus resultados previos desde el apartado 'Resultados Anteriores' en el menú de usuario."
     )
     object Item2: ItemsContent(
         null,
@@ -26,8 +34,8 @@ sealed class ItemsContent(
     object Item3: ItemsContent(
         null,
         "Sobre nosotros",
-        "Somos un grupo de alumnos de 2º Desarrollo de Aplicaciones Multiplataforma que nos hemos lanzado " +
-                "en este gran proyecto con tecnologías totalmente desconocidas, dicho grupo se compone por:" +
+        "Somos un grupo de alumnos de 2º CFGS Desarrollo de Aplicaciones Multiplataforma que nos hemos lanzado " +
+                "en este gran proyecto con tecnologías totalmente desconocidas. Dicho grupo se compone por:" +
                 "\n\n\t - Abdelhaq Boulboul" +
                 "\n\t - Adrián Santos-Olmo Díaz" +
                 "\n\t - María del Carmen Díaz" +
@@ -35,7 +43,7 @@ sealed class ItemsContent(
                 "\n\t - Sergio Guijarro" +
                 "\n\nPor último, pero no menos importante, queríamos darle un especial agradecimiento " +
                 "a nuestros profesores José Abaldea García y a David Muñoz por monitorizarnos y enseñarnos cómo " +
-                "se trabaja en un entorno empresarial, también agradecemos a aquellos profesores del centro " +
+                "se trabaja en un entorno empresarial, y también agradecer a aquellos docentes " +
                 "que han aportado su granito de arena para que esta aplicación pudiera salir hacia delante."
     )
 }

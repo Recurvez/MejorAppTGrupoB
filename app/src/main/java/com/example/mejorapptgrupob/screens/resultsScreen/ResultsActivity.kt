@@ -215,7 +215,7 @@ fun ResultCard(resultados: Results) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Nivel Físico: ${resultados.sumFact02} - ${resultados.nivelFact02}")
+                Text("Nivel Fisiológico: ${resultados.sumFact02} - ${resultados.nivelFact02}")
                 Icon(
                     imageVector = resultados.iconoFact02,
                     contentDescription = null,
