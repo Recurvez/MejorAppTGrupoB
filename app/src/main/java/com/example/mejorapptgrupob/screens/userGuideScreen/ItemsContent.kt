@@ -42,8 +42,8 @@ sealed class ItemsContent(
                 "\n\t - Andrés Pisa" +
                 "\n\t - Sergio Guijarro" +
                 "\n\nPor último, pero no menos importante, queríamos darle un especial agradecimiento " +
-                "a nuestros profesores José Abaldea García y a David Muñoz por monitorizarnos y enseñarnos cómo " +
-                "se trabaja en un entorno empresarial, y también agradecer a aquellos docentes " +
+                "a nuestros profesores Manuel José Abaldea García y a David Muñoz por monitorizarnos y enseñarnos cómo " +
+                "se trabaja en un entorno empresarial, y también agradecer a aquellos docentes y alumn@s" +
                 "que han aportado su granito de arena para que esta aplicación pudiera salir hacia delante."
     )
 }
