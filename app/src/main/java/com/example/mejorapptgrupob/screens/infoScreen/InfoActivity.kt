@@ -1,11 +1,13 @@
 package com.example.mejorapptgrupob.screens.infoScreen
 
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +19,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -28,16 +34,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mejorapptgrupob.R
+import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
 import com.example.mejorapptgrupob.screens.infoScreen.ui.theme.MejorAppTGrupoBTheme
 
 class InfoActivity : ComponentActivity() {
@@ -82,26 +91,22 @@ internal fun InfoLayout() {
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
-            Spacer(modifier = Modifier.height(110.dp))
+            Spacer(modifier = Modifier.height(70.dp))
             Text(
-                text = "INFORMACIÓN DE",
-
-                style = MaterialTheme.typography.titleLarge, fontSize = 25.sp, fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.padding(5.dp))
-
-            Text(
-                text = "INTERÉS",
+                text = "INFORMACIÓN DE INTERÉS",
+                style = TextStyle(
+                    fontSize = 25.sp,
+                    color = Color(0xFFBA55D3),
+                    fontWeight = FontWeight.Bold,
+                    shadow = Shadow(Color.Gray, offset = Offset(3f, 3f), blurRadius = 9f)
+                ) ,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleLarge,fontSize = 25.sp,fontWeight = FontWeight.Bold,
-            )
 
+            )
         }
 
-        Spacer(modifier = Modifier.padding(15.dp))
+        Spacer(Modifier.height(60.dp))
 
         Column {
             CardWithIcon(
@@ -154,8 +159,26 @@ internal fun InfoLayout() {
                 )
             )
 
+            Spacer(Modifier.height(40.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 0.dp, 20.dp, 0.dp)
+            ) {
+                var intent = Intent(mContext, FirstActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                ExtendedFloatingActionButton(
+                    text = { Text(text = "Volver atrás") },
+                    icon = { Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "flecha para ir atrás")  },
+                    onClick = { mContext.startActivity(intent) })
+
+            }
+
         }
     }
+
 }
 
 @Composable
