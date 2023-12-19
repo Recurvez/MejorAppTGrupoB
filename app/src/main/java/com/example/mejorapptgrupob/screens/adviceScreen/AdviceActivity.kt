@@ -23,6 +23,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -209,7 +211,9 @@ class AdviceActivity : ComponentActivity() {
                             )
                         ),
                         shape = RoundedCornerShape(8.dp)
-                    )
+
+                    ),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
