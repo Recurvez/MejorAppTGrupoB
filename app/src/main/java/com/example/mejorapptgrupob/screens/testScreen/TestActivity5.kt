@@ -58,8 +58,8 @@
             // Bloqueo de orientación
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-            val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
-            val inputStream = resources.openRawResource(R.raw.preguntas)
+            val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntasv1),this)
+            val inputStream = resources.openRawResource(R.raw.preguntasv1)
             preguntas = QuestionList.readCSV(inputStream, this)
             setContent {
                 MaterialTheme(

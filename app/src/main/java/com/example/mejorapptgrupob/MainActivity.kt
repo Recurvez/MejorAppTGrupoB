@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
         // Bloqueo de orientación
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntas),this)
+        val dbUtilities = DBUtilities(resources.openRawResource(R.raw.preguntasv1),this)
         DataStoreManager.initializeDataStore(dataStore)
 
         setContent {
