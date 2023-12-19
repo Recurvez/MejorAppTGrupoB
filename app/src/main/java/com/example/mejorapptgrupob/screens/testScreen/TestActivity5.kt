@@ -189,8 +189,8 @@
                             mContext.startActivity(Intent(mContext, TestActivity4::class.java))
                         })
                         BotonSiguiente(onClick = {
-                            if (sliderPosition17 != 0f || sliderPosition18 != 0f ||
-                                sliderPosition19 != 0f || sliderPosition20 != 0f
+                            if (sliderPosition17 != 0f && sliderPosition18 != 0f &&
+                                sliderPosition19 != 0f && sliderPosition20 != 0f
                             ) {
                                 GlobalLists.respuestasFisiologica[7] = mapearValor(sliderPosition17)
                                 GlobalLists.respuestasCognitiva[6] = mapearValor(sliderPosition18)

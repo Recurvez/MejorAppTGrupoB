@@ -116,7 +116,7 @@ fun ResultsLayout() {
     LaunchedEffect(Unit) {
         isLoading = true
 
-        // Obtener el ID del usuario actual
+        // Obtener el nick del usuario actual
         val userNick = currentUser?.email ?: ""
 
         resultadosList = getResultsFromFirebase(userNick)

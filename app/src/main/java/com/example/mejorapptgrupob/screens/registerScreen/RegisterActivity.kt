@@ -71,6 +71,7 @@ import com.example.mejorapptgrupob.MainActivity
 import com.example.mejorapptgrupob.R
 import com.example.mejorapptgrupob.firebase.FirebaseUtils
 import com.example.mejorapptgrupob.screens.firstScreen.FirstActivity
+import com.example.mejorapptgrupob.screens.loginScreen.currentUser
 
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -253,6 +254,8 @@ internal fun RegisterLayout() {
                     } else {
                         Spacer(modifier = Modifier.padding(20.dp))
                     }
+
+                    currentUser = email
 
                     var isNameFocus by remember {
                         mutableStateOf(false)
